@@ -1,21 +1,26 @@
+package Model;
+
 import java.util.ArrayList;
 
-public class Noeud implements Actions{
+public class Noeud implements Actions {
     private String titre;
     private String couleur;
     private String description;
     private String forme;
+    private double x;
+    private double y;
     private ArrayList<Liaison> liaisonFils;
     private Liaison liaisonPere;
     private ArrayList<Noeud> noeudFils;
     private Noeud noeudPere;
 
-
-    public Noeud(String titre, String couleur, String description, String forme, ArrayList<Liaison> liaisonFils, Liaison liaisonPere, ArrayList<Noeud> noeudFils, Noeud noeudPere) {
+    public Noeud(String titre, String couleur, String description, String forme, double x, double y, ArrayList<Liaison> liaisonFils, Liaison liaisonPere, ArrayList<Noeud> noeudFils, Noeud noeudPere) {
         this.titre = titre;
         this.couleur = couleur;
         this.description = description;
         this.forme = forme;
+        this.x = x;
+        this.y = y;
         this.liaisonFils = liaisonFils;
         this.liaisonPere = liaisonPere;
         this.noeudFils = noeudFils;
@@ -70,6 +75,38 @@ public class Noeud implements Actions{
         this.liaisonPere = liaisonPere;
     }
 
+    public double getX() {
+        return x;
+    }
+
+    public void setX(double x) {
+        this.x = x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    public void setY(double y) {
+        this.y = y;
+    }
+
+    public ArrayList<Noeud> getNoeudFils() {
+        return noeudFils;
+    }
+
+    public void setNoeudFils(ArrayList<Noeud> noeudFils) {
+        this.noeudFils = noeudFils;
+    }
+
+    public Noeud getNoeudPere() {
+        return noeudPere;
+    }
+
+    public void setNoeudPere(Noeud noeudPere) {
+        this.noeudPere = noeudPere;
+    }
+
     @Override
     public boolean ajouterNoeud() {
         return false;
@@ -77,16 +114,6 @@ public class Noeud implements Actions{
 
     @Override
     public boolean supprimer() {
-        return false;
-    }
-
-    @Override
-    public boolean deplacer() {
-        return false;
-    }
-
-    @Override
-    public boolean draw() {
         return false;
     }
 }

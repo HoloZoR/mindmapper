@@ -1,5 +1,8 @@
+package Vue;
+
+import Utils.Observe;
+
 import javax.swing.*;
-import java.awt.*;
 
 public class FenetrePrincipal extends Observe {
 

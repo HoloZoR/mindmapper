@@ -1,3 +1,10 @@
+package Controleur;
+
+import Model.Noeud;
+import Utils.Message;
+import Utils.Observateur;
+import Vue.FenetrePrincipal;
+
 import java.util.ArrayList;
 
 public class Contorleur implements Observateur {

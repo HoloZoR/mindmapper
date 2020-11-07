@@ -1,3 +1,5 @@
+package Model;
+
 public class Liaison {
     private String type;
     private String couleur;
