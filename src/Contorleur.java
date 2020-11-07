@@ -13,6 +13,20 @@ public class Contorleur implements Observateur {
 
     @Override
     public void traiterMessage(Message m) {
+        switch (m.type) {
+            case OUVRIR:
+                break;
+            case SAUVEGARDER:
+                break;
+            case CREERNOEUD:
+                break;
+            case CREERLIEN:
+                break;
+            case RECHERCHER:
+                break;
+            default:
+                break;
+        }
 
     }
 }
