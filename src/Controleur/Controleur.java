@@ -4,13 +4,15 @@ import Model.Noeud;
 import Utils.Message;
 import Utils.Observateur;
 import Vue.FenetrePrincipal;
+import javax.swing.*;
+import java.awt.*;
 
 import java.util.ArrayList;
 
 public class Controleur implements Observateur {
     private FenetrePrincipal fenetre;
     private ArrayList<Noeud> noeuds;
-
+/**/
     public Controleur() {
         this.fenetre = new FenetrePrincipal();
         fenetre.setVisible(true);
@@ -21,9 +23,13 @@ public class Controleur implements Observateur {
     @Override
     public void traiterMessage(Message m) {
         switch (m.type) {
+            case NEW:
+                break;
             case OUVRIR:
                 break;
             case SAUVEGARDER:
+                break;
+            case SAUVEGARDERIMAGE:
                 break;
             case CREERNOEUD:
                 break;
