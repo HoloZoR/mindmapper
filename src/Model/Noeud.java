@@ -11,8 +11,6 @@ public class Noeud implements Actions {
     private double y;
     private ArrayList<Liaison> liaisonFils;
     private Liaison liaisonPere;
-    private ArrayList<Noeud> noeudFils;
-    private Noeud noeudPere;
 
     public Noeud(String titre, String couleur, String description, String forme, double x, double y) {
         this.titre = titre;
@@ -22,9 +20,7 @@ public class Noeud implements Actions {
         this.x = x;
         this.y = y;
         this.liaisonPere = null;
-        this.noeudPere = null;
         this.liaisonFils = new ArrayList<>();
-        this.noeudFils = new ArrayList<>();
     }
     public Noeud(String titre, String couleur, String description, String forme, double x, double y, Liaison liaisonPere, Noeud noeudPere) {
         this.titre = titre;
@@ -35,8 +31,6 @@ public class Noeud implements Actions {
         this.y = y;
         this.liaisonFils = new ArrayList<>();
         this.liaisonPere = liaisonPere;
-        this.noeudFils = new ArrayList<>();
-        this.noeudPere = noeudPere;
     }
 
     public String getTitre() {
@@ -101,22 +95,6 @@ public class Noeud implements Actions {
 
     public void setY(double y) {
         this.y = y;
-    }
-
-    public ArrayList<Noeud> getNoeudFils() {
-        return noeudFils;
-    }
-
-    public void setNoeudFils(ArrayList<Noeud> noeudFils) {
-        this.noeudFils = noeudFils;
-    }
-
-    public Noeud getNoeudPere() {
-        return noeudPere;
-    }
-
-    public void setNoeudPere(Noeud noeudPere) {
-        this.noeudPere = noeudPere;
     }
 
     @Override

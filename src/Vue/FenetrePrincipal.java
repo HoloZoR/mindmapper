@@ -7,10 +7,12 @@ import java.awt.*;
 
 public class FenetrePrincipal extends Observe {
 
+    private ToolBar toolBar;
+
     public FenetrePrincipal() {
         super();
         build();
-        ToolBar toolBar = new ToolBar();
+        toolBar = new ToolBar();
         this.add(toolBar.getToolBar(), BorderLayout.NORTH);
     }
 
@@ -20,5 +22,13 @@ public class FenetrePrincipal extends Observe {
         setLocationRelativeTo(null);
         setResizable(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    public ToolBar getToolBar() {
+        return toolBar;
+    }
+
+    public void setToolBar(ToolBar toolBar) {
+        this.toolBar = toolBar;
     }
 }

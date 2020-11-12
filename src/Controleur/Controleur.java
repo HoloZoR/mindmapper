@@ -17,6 +17,7 @@ public class Controleur implements Observateur {
         this.fenetre = new FenetrePrincipal();
         fenetre.setVisible(true);
         fenetre.addObsevateur(this);
+        fenetre.getToolBar().addObsevateur(this);
         this.noeuds = new ArrayList<>();
     }
 
