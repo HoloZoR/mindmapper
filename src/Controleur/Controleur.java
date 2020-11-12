@@ -33,6 +33,7 @@ public class Controleur implements Observateur {
             case SAUVEGARDERIMAGE:
                 break;
             case CREERNOEUD:
+                fenetre.drawNoeud();
                 break;
             case CREERLIEN:
                 break;
