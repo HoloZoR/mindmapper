@@ -7,11 +7,11 @@ import Vue.FenetrePrincipal;
 
 import java.util.ArrayList;
 
-public class Contorleur implements Observateur {
+public class Controleur implements Observateur {
     private FenetrePrincipal fenetre;
     private ArrayList<Noeud> noeuds;
 
-    public Contorleur() {
+    public Controleur() {
         this.fenetre = new FenetrePrincipal();
         fenetre.setVisible(true);
         fenetre.addObsevateur(this);

@@ -14,16 +14,28 @@ public class Noeud implements Actions {
     private ArrayList<Noeud> noeudFils;
     private Noeud noeudPere;
 
-    public Noeud(String titre, String couleur, String description, String forme, double x, double y, ArrayList<Liaison> liaisonFils, Liaison liaisonPere, ArrayList<Noeud> noeudFils, Noeud noeudPere) {
+    public Noeud(String titre, String couleur, String description, String forme, double x, double y) {
         this.titre = titre;
         this.couleur = couleur;
         this.description = description;
         this.forme = forme;
         this.x = x;
         this.y = y;
-        this.liaisonFils = liaisonFils;
+        this.liaisonPere = null;
+        this.noeudPere = null;
+        this.liaisonFils = new ArrayList<>();
+        this.noeudFils = new ArrayList<>();
+    }
+    public Noeud(String titre, String couleur, String description, String forme, double x, double y, Liaison liaisonPere, Noeud noeudPere) {
+        this.titre = titre;
+        this.couleur = couleur;
+        this.description = description;
+        this.forme = forme;
+        this.x = x;
+        this.y = y;
+        this.liaisonFils = new ArrayList<>();
         this.liaisonPere = liaisonPere;
-        this.noeudFils = noeudFils;
+        this.noeudFils = new ArrayList<>();
         this.noeudPere = noeudPere;
     }
 
