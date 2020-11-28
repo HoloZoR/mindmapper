@@ -22,7 +22,7 @@ public class FenetrePrincipal extends Observe implements ActionListener {
     private final int NOEUDHEIGHT = 50;
 
     private ToolBar toolBar;
-    private JPanel surface;
+    private Surface surface;
     private HashMap<JTextField, JPanel> noeuds;
     private Mouvement mv;
 
@@ -51,10 +51,8 @@ public class FenetrePrincipal extends Observe implements ActionListener {
     }
 
     private void buildSurface() {
-        surface = new JPanel();
-        surface.getSize(getSize());
-        surface.setLayout(null);
-        surface.setLocation(0,0);
+        surface = new Surface();
+        surface.setSize(getSize());
     }
 
     public ToolBar getToolBar() {
@@ -85,29 +83,9 @@ public class FenetrePrincipal extends Observe implements ActionListener {
         revalidate();
     }
 
-    public void paint(Graphics g) {
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.setColor(Color.blue);
-        for (Map.Entry map1 : noeuds.entrySet()) {
-            for (Map.Entry map2 : noeuds.entrySet()) {
-                JPanel noeud1 = (JPanel) map1.getValue();
-                JPanel noeud2 = (JPanel) map2.getValue();
-                noeud1.repaint();
-                noeud2.repaint();
-                g2d.drawLine(noeud1.getX(),noeud1.getY(),noeud2.getX(),noeud2.getY());
-            }
-        }
-
-    }
-
-    public JPanel getSurface() {
-        return surface;
-    }
-
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
         String action = actionEvent.getActionCommand();
-
         switch(action) {
             case "TextNoeud":
                 JTextField text = (JTextField) actionEvent.getSource();
