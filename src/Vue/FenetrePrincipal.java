@@ -1,31 +1,27 @@
 package Vue;
 
 import Utils.Commandes;
-import Utils.Message;
 import Utils.Mouvement;
 import Utils.Observe;
-import org.w3c.dom.Text;
 
 import javax.swing.*;
-import javax.swing.text.StyledEditorKit;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 public class FenetrePrincipal extends Observe implements ActionListener {
     private final int WINDOWWIDTH = 640;
     private final int WINDOWHEIGHT = 480;
-    private final int NOEUDWIDTH = 50;
-    private final int NOEUDHEIGHT = 50;
+    private final int NOEUDWIDTH = 100;
+    private final int NOEUDHEIGHT = 100;
 
     private ToolBar toolBar;
     private Surface surface;
     private HashMap<JTextField, JPanel> noeuds;
     private Mouvement mv;
-
+    private int compteur = -1;
+    private Commandes typeAction;
 
     public FenetrePrincipal() {
         super();
@@ -53,6 +49,22 @@ public class FenetrePrincipal extends Observe implements ActionListener {
     private void buildSurface() {
         surface = new Surface();
         surface.setSize(getSize());
+    }
+
+    public HashMap<JTextField, JPanel> getNoeuds() {
+        return noeuds;
+    }
+
+    public void setNoeuds(HashMap<JTextField, JPanel> noeuds) {
+        this.noeuds = noeuds;
+    }
+
+    public Surface getSurface() {
+        return surface;
+    }
+
+    public void setSurface(Surface surface) {
+        this.surface = surface;
     }
 
     public ToolBar getToolBar() {
@@ -83,6 +95,38 @@ public class FenetrePrincipal extends Observe implements ActionListener {
         revalidate();
     }
 
+
+    public Commandes getTypeAction() {
+        return typeAction;
+    }
+
+    public void setTypeAction(Commandes typeAction) {
+        this.typeAction = typeAction;
+    }
+
+    public void creerLien() {
+        setTypeAction(Commandes.CREERLIEN);
+
+        if(compteur == -1) {
+            compteur = 0;
+        }
+    }
+
+    public void supprimerNoeud(){
+        setTypeAction(Commandes.SUPPRIMER);
+    }
+
+    public boolean incrementeCompteur() {
+        if(compteur == -1) {
+            return false;
+        } else if (compteur == 0) {
+            compteur++;
+            return true;
+        } else {
+            compteur = -1;
+            return true;
+        }
+    }
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
         String action = actionEvent.getActionCommand();

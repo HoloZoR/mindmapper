@@ -3,6 +3,7 @@ package Utils;
 import Vue.FenetrePrincipal;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -23,7 +24,26 @@ public class Mouvement implements MouseListener, MouseMotionListener {
 
     @Override
     public void mouseClicked(MouseEvent mouseEvent) {
-
+        if (fenetre.getTypeAction() == Commandes.CREERLIEN && fenetre.incrementeCompteur()) {
+            ArrayList<Component> liaisons = fenetre.getSurface().getLiaisons();
+            liaisons.add(mouseEvent.getComponent());
+        } else if (fenetre.getTypeAction() == Commandes.SUPPRIMER) {
+            ArrayList<Component> liaisons = fenetre.getSurface().getLiaisons();
+            if(liaisons.size() >= 2) {
+                for (int i = 0; i < liaisons.size() - 1; i += 2) {
+                    if (liaisons.get(i).equals(mouseEvent.getComponent()) || (liaisons.get(i + 1).equals(mouseEvent.getComponent()))) {
+                        liaisons.remove(i + 1);
+                        liaisons.remove(i);
+                    }
+                }
+            }
+            mouseEvent.getComponent().removeMouseListener(this);
+            fenetre.getNoeuds().values().remove(mouseEvent.getComponent());
+            fenetre.getSurface().remove(mouseEvent.getComponent());
+            fenetre.setTypeAction(null);
+        }
+        fenetre.repaint();
+        fenetre.getSurface().repaint();
     }
 
     @Override

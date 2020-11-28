@@ -36,6 +36,10 @@ public class Controleur implements Observateur {
                 fenetre.ajouterNoeud();
                 break;
             case CREERLIEN:
+                fenetre.creerLien();
+                break;
+            case SUPPRIMER:
+                fenetre.supprimerNoeud();
                 break;
             case RECHERCHER:
                 break;

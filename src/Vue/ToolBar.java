@@ -22,6 +22,7 @@ public class ToolBar extends Observe implements ActionListener {
     private JButton btnSaveAs;
     private JButton btnAjouterNoeud;
     private JButton btnAjouterLiaison;
+    private JButton btnSupprimerNoeud;
     private JButton btnLoop;
     private JTextField searchField;
 
@@ -65,6 +66,12 @@ public class ToolBar extends Observe implements ActionListener {
         btnAjouterLiaison.addActionListener(this);
         btnAjouterLiaison.setActionCommand("Liaison");
         toolBar.add( btnAjouterLiaison );
+
+        btnSupprimerNoeud = new JButton(new ImageIcon( "icons/Supp.png" ));
+        btnSupprimerNoeud.setToolTipText( "Supprimer un noeuds" );
+        btnSupprimerNoeud.addActionListener(this);
+        btnSupprimerNoeud.setActionCommand("Supprimer");
+        toolBar.add( btnSupprimerNoeud );
 
 
         btnLoop = new JButton(new ImageIcon( "icons/Loop.png" ));
@@ -113,6 +120,10 @@ public class ToolBar extends Observe implements ActionListener {
                 break;
             case "Liaison":
                 m.type = Commandes.CREERLIEN;
+                super.notifierObservateur(m);
+                break;
+            case "Supprimer":
+                m.type = Commandes.SUPPRIMER;
                 super.notifierObservateur(m);
                 break;
             case "Search":
