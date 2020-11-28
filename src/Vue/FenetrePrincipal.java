@@ -13,6 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class FenetrePrincipal extends Observe implements ActionListener {
     private final int WINDOWWIDTH = 640;
@@ -35,15 +36,15 @@ public class FenetrePrincipal extends Observe implements ActionListener {
         toolBar = new ToolBar();
 
 
-        this.add(toolBar.getToolBar(), BorderLayout.NORTH);
         this.add(surface);
-        mv = new Mouvement();
+        this.add(toolBar.getToolBar(), BorderLayout.NORTH);
+        mv = new Mouvement(this);
 
     }
 
     private void build() {
         setTitle("MindMapper");
-        setSize(WINDOWWIDTH,WINDOWHEIGHT);
+        setSize(WINDOWWIDTH, WINDOWHEIGHT);
         setLocationRelativeTo(null);
         setResizable(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -82,7 +83,25 @@ public class FenetrePrincipal extends Observe implements ActionListener {
         mv.addListener(pan);
 
         revalidate();
-        repaint();
+    }
+
+    public void paint(Graphics g) {
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setColor(Color.blue);
+        for (Map.Entry map1 : noeuds.entrySet()) {
+            for (Map.Entry map2 : noeuds.entrySet()) {
+                JPanel noeud1 = (JPanel) map1.getValue();
+                JPanel noeud2 = (JPanel) map2.getValue();
+                noeud1.repaint();
+                noeud2.repaint();
+                g2d.drawLine(noeud1.getX(),noeud1.getY(),noeud2.getX(),noeud2.getY());
+            }
+        }
+
+    }
+
+    public JPanel getSurface() {
+        return surface;
     }
 
     @Override

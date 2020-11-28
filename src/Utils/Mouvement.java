@@ -1,5 +1,7 @@
 package Utils;
 
+import Vue.FenetrePrincipal;
+
 import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -9,8 +11,9 @@ import java.util.ArrayList;
 public class Mouvement implements MouseListener, MouseMotionListener {
 
     private int X, Y;
-
-    public Mouvement() {
+    private FenetrePrincipal fenetre;
+    public Mouvement(FenetrePrincipal fenetre) {
+        this.fenetre = fenetre;
     }
 
     public void addListener(JPanel panel) {
@@ -49,7 +52,7 @@ public class Mouvement implements MouseListener, MouseMotionListener {
         int x = (mouseEvent.getX() + mouseEvent.getComponent().getX()) - X;
         int y = (mouseEvent.getY() + mouseEvent.getComponent().getY()) - Y;
         mouseEvent.getComponent().setLocation(x, y);
-        mouseEvent.getComponent().repaint();
+        fenetre.repaint();
     }
 
     @Override

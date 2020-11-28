@@ -77,8 +77,13 @@ public class ToolBar extends Observe implements ActionListener {
         searchField.setMaximumSize(new Dimension(200,40));
         toolBar.add(searchField);
     }
+
     public JToolBar getToolBar(){
         return this.toolBar;
+    }
+
+    public int getHeight() {
+        return this.toolBar.getHeight();
     }
 
     @Override
