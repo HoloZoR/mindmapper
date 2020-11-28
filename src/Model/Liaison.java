@@ -6,9 +6,7 @@ public class Liaison {
     private Noeud noeudPere;
     private Noeud noeudFils;
 
-    public Liaison(String type, String couleur, Noeud noeudPere, Noeud noeudFils) {
-        this.type = type;
-        this.couleur = couleur;
+    public Liaison(Noeud noeudPere, Noeud noeudFils) {
         this.noeudPere = noeudPere;
         this.noeudFils = noeudFils;
     }

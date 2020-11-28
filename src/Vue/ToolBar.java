@@ -3,10 +3,8 @@ import Utils.Observe;
 
 import Utils.Commandes;
 import Utils.Message;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JTextField;
-import javax.swing.JToolBar;
+
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,7 +24,6 @@ public class ToolBar extends Observe implements ActionListener {
     private JButton btnLoop;
     private JTextField searchField;
 
-
     public ToolBar() {
 
         this.toolBar = new JToolBar();
@@ -35,38 +32,37 @@ public class ToolBar extends Observe implements ActionListener {
         btnNew.setToolTipText( "New File" ); // l'indice lorsque la sourie est sur le bouton
         btnNew.addActionListener(this);
         btnNew.setActionCommand("New"); // variable permettant l'identification de l'action
-        toolBar.add( btnNew );
+        toolBar.add( btnNew, BorderLayout.WEST );
 
         btnOpen = new JButton(new ImageIcon( "icons/Folder.png" ));
         btnOpen.setToolTipText( "Open file" );
         btnOpen.addActionListener(this);
         btnOpen.setActionCommand("Open");
-        toolBar.add( btnOpen );
+        toolBar.add( btnOpen, BorderLayout.WEST );
 
         btnSave = new JButton(new ImageIcon( "icons/Save.png" ));
         btnSave.setToolTipText( "Save" );
         btnSave.addActionListener(this);
         btnSave.setActionCommand("Save");
-        toolBar.add( btnSave );
+        toolBar.add( btnSave, BorderLayout.WEST );
 
         btnSaveAs = new JButton(new ImageIcon( "icons/SaveAs.png" ));
         btnSaveAs.setToolTipText( "Save As..." );
         btnSaveAs.addActionListener(this);
         btnSaveAs.setActionCommand("SaveAs");
-        toolBar.add( btnSaveAs );
+        toolBar.add( btnSaveAs, BorderLayout.WEST );
 
         btnAjouterNoeud = new JButton(new ImageIcon( "icons/Plus.png" ));
         btnAjouterNoeud.setToolTipText( "Ajouter un Noeud" );
         btnAjouterNoeud.addActionListener(this);
         btnAjouterNoeud.setActionCommand("Noeud");
-        toolBar.add( btnAjouterNoeud );
+        toolBar.add( btnAjouterNoeud, BorderLayout.CENTER );
 
         btnAjouterLiaison = new JButton(new ImageIcon( "icons/Link.png" ));
         btnAjouterLiaison.setToolTipText( "Ajouter une liaison" );
         btnAjouterLiaison.addActionListener(this);
         btnAjouterLiaison.setActionCommand("Liaison");
-        toolBar.add( btnAjouterLiaison );
-
+        toolBar.add( btnAjouterLiaison, BorderLayout.CENTER );
         btnSupprimerNoeud = new JButton(new ImageIcon( "icons/Supp.png" ));
         btnSupprimerNoeud.setToolTipText( "Supprimer un noeuds" );
         btnSupprimerNoeud.addActionListener(this);
@@ -78,11 +74,11 @@ public class ToolBar extends Observe implements ActionListener {
         btnLoop.setToolTipText( "Rechercher un mot" );
         btnLoop.addActionListener(this);
         btnLoop.setActionCommand("Search");
-        toolBar.add(btnLoop);
+        toolBar.add(btnLoop, BorderLayout.EAST);
 
         searchField = new JTextField( "" );
         searchField.setMaximumSize(new Dimension(200,40));
-        toolBar.add(searchField);
+        toolBar.add(searchField, BorderLayout.EAST);
     }
 
     public JToolBar getToolBar(){
@@ -107,11 +103,11 @@ public class ToolBar extends Observe implements ActionListener {
                 super.notifierObservateur(m);
                 break;
             case "Save":
-                m.type = Commandes.SAUVEGARDER;
+                m.type = Commandes.SAVE;
                 super.notifierObservateur(m);
                 break;
             case "SaveAs":
-                m.type = Commandes.SAUVEGARDERIMAGE;
+                m.type = Commandes.SAVEAS;
                 super.notifierObservateur(m);
                 break;
             case "Noeud":
@@ -134,4 +130,5 @@ public class ToolBar extends Observe implements ActionListener {
                 // code block
         }
     }
+
 }
