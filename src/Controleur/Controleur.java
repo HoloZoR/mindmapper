@@ -13,7 +13,6 @@ import java.util.ArrayList;
 
 public class Controleur implements Observateur {
     private FenetrePrincipal fenetre;
-    private ArrayList<Noeud> noeuds;
     private String pathname = "";
 /**/
     public Controleur() {
@@ -21,7 +20,6 @@ public class Controleur implements Observateur {
         fenetre.setVisible(true);
         fenetre.addObsevateur(this);
         fenetre.getToolBar().addObsevateur(this);
-        this.noeuds = new ArrayList<>();
     }
 
     @Override
@@ -31,6 +29,12 @@ public class Controleur implements Observateur {
 
         switch (m.type) {
             case NEW:
+                fenetre.dispose();
+                this.fenetre = new FenetrePrincipal();
+                fenetre.setVisible(true);
+                fenetre.addObsevateur(this);
+                fenetre.getToolBar().addObsevateur(this);
+
                 break;
             case OUVRIR:
 
@@ -86,6 +90,32 @@ public class Controleur implements Observateur {
                 fenetre.supprimerNoeud();
                 break;
             case RECHERCHER:
+                Recherche.removeHighLights(fenetre);
+                String mot = fenetre.getToolBar().getSearchField().getText();
+                if (!mot.equals("")){
+                    boolean founded = Recherche.rechercherMot(mot, fenetre);
+                    if (founded){
+                        fenetre.getToolBar().setReplaceVisible(true);
+                    }
+
+                }else{
+                    Recherche.removeHighLights(fenetre);
+                    fenetre.getToolBar().setReplaceVisible(false);
+                }
+                break;
+            case REMPLACER:
+
+                String oldWord = fenetre.getToolBar().getSearchField().getText();
+                String newWord = fenetre.getToolBar().getReplaceField().getText();
+                if (!oldWord.equals("") && !newWord.equals("")){
+                    Recherche.rempalcerParMot(oldWord, newWord, fenetre);
+                    Recherche.removeHighLights(fenetre);
+                    fenetre.getToolBar().setReplaceVisible(false);
+
+                }else if (oldWord.equals("")){
+                    Recherche.removeHighLights(fenetre);
+                    fenetre.getToolBar().setReplaceVisible(false);
+                }
                 break;
             default:
                 break;

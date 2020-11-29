@@ -1,5 +1,6 @@
 package Controleur;
 
+import java.awt.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -7,6 +8,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.swing.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -18,6 +20,7 @@ import javax.xml.transform.stream.StreamResult;
 
 import Model.Liaison;
 import Model.Noeud;
+import Vue.FenetrePrincipal;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
@@ -173,193 +176,226 @@ public class SaveAndLoad {
         return new ArrayList<>(noeudsMap.values());
     }
 
-    // BROUILLON
-    public static void ChangeXMLFile() {
+    public static void  ModelToView(ArrayList<Noeud> noeuds, FenetrePrincipal fenetre){
+        HashMap<JTextField, JPanel> noeudsView = new HashMap<>();
+        for (Noeud noeud: noeuds) {
 
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            JTextField textField = new JTextField(noeud.getTitre());
+            textField.addActionListener(fenetre);
+            textField.setActionCommand("TextNoeud");
 
-        try {
-            DocumentBuilder builder = factory.newDocumentBuilder();
-            File fileXML = new File("MindMaps.xml");
-
-            Document xml = builder.parse(fileXML);
-            Element MindMaps = xml.getDocumentElement();
-
-            //############# DEBUT DES MODFICATIONS ################################
-            Node noeud = MindMaps.getFirstChild().getFirstChild().getFirstChild();
-            NamedNodeMap attributes = noeud.getAttributes();
-
-            Node attr = attributes.getNamedItem("couleur");
-            attr.setTextContent("vert");
-
-            Element age = xml.createElement("age");
-            age.appendChild(xml.createTextNode("28"));
-            noeud.appendChild(age);
-            //############# FIN DES MODFICATION #################################
-            TransformerFactory transformerFactory = TransformerFactory.newInstance();
-            Transformer transformer = transformerFactory.newTransformer();
-            DOMSource source = new DOMSource(xml);
-            StreamResult resultat = new StreamResult(new File("MindMaps.xml"));
-            transformer.transform(source, resultat);
-            System.out.println("Fichier modifier avec succès!");
-
-
-        } catch (ParserConfigurationException | IOException | TransformerException | SAXException e) {
-            e.printStackTrace();
+            JPanel pan = new JPanel();
+            pan.setName(""+noeud.getId());
+            pan.setBackground(Color.lightGray);
+            pan.setLayout(new GridLayout(3, 1));
+            pan.setSize(fenetre.NOEUDWIDTH, fenetre.NOEUDHEIGHT);
+            pan.setLocation((int) noeud.getX(),(int)noeud.getY());
+            pan.add(textField);
+            pan.add(new JLabel(""));
+            pan.add(new JLabel(""));
+            fenetre.getNoeuds().put(textField, pan);
+            fenetre.getSurface().add(pan);
+            fenetre.getMv().addListener(pan);
         }
+        //ArrayList<Component> liaisons = new ArrayList<>();
+
     }
 
-    // BROUILLON
-    public static void AfficherXMLFile() {
+    public static ArrayList<Noeud> ViewToModel(FenetrePrincipal fenetre){
+        ArrayList<Noeud> noeuds = new ArrayList<>();
 
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        try {
-            DocumentBuilder builder = factory.newDocumentBuilder();
-            File fileXML = new File("MindMap.xml");
-            Document xml = builder.parse(fileXML);
-            Element MindMap = xml.getDocumentElement();
-            System.out.println(MindMap.getFirstChild());
+        return noeuds;
+        //ArrayList<Component> liaisons = new ArrayList<>();
 
-            Node noeuds = MindMap.getFirstChild();
-            System.out.println("\t" + noeuds.getNodeName());
-            NodeList noeudsList = noeuds.getChildNodes();
-            for (int n = 0; n < noeudsList.getLength(); n++) {
-                Node noeud = noeudsList.item(n);
-                System.out.println("\t\t" + noeud.getNodeName());
-                NodeList attributesList = noeud.getChildNodes();
-                for (int a = 0; a < attributesList.getLength(); a++) {
-                    Node attribut = attributesList.item(a);
-                    System.out.println("\t\t\t" + attribut.getNodeName() + " = " + attribut.getTextContent());
-                }
-            }
-            Node liaisons = MindMap.getFirstChild();
-            NodeList liaisonsList = liaisons.getChildNodes();
-            for (int l = 0; l < liaisonsList.getLength(); l++) {
-                Node liaison = liaisonsList.item(l);
-                System.out.println("\t\t" + liaison.getNodeName());
-                NodeList attributesList = liaison.getChildNodes();
-                for (int a = 0; a < attributesList.getLength(); a++) {
-                    Node attribut = attributesList.item(a);
-                    System.out.println("\t\t\t" + attribut.getNodeName());
-                }
-            }
-            //############# FIN DES l'affichage #################################
-
-
-        } catch (ParserConfigurationException | IOException | SAXException e) {
-            e.printStackTrace();
-        }
     }
 
-    // BROUILLON
-    public static void CreateXMLFile() {
-        try {
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder builder = factory.newDocumentBuilder();
-
-            Document xml = builder.newDocument();
-            Element mindMaps = xml.createElement("MindMaps");
-            xml.appendChild(mindMaps);
-            //############# DEBUT DES AJOUT D'ELEMENTS################################
-            // STRCUTURE
-            Element mindMap = xml.createElement("MindMap");
-            mindMaps.appendChild(mindMap);
-
-            Element noeuds = xml.createElement("Noeuds");
-            mindMap.appendChild(noeuds);
-
-            Element liaisons = xml.createElement("Liaisons");
-            mindMap.appendChild(liaisons);
-
-            // CONTENU
-
-            //NOEUDS
-
-            Element titre = xml.createElement("titre");
-            titre.appendChild(xml.createTextNode("Noeud principale"));
-
-            Element couleur = xml.createElement("Couleur");
-            couleur.appendChild(xml.createTextNode("Rouge"));
-
-            Element description = xml.createElement("Description");
-            description.appendChild(xml.createTextNode("je suis entrant d'ecrire une description !"));
-
-            Element forme = xml.createElement("Forme");
-            forme.appendChild(xml.createTextNode("Rectangle"));
-
-            Element x = xml.createElement("X");
-            x.appendChild(xml.createTextNode("10"));
-
-            Element y = xml.createElement("Y");
-            y.appendChild(xml.createTextNode("20"));
-
-            Element noeud1 = xml.createElement("Noeud");
-            noeuds.appendChild(noeud1);
-
-            Attr id = xml.createAttribute("id");
-            id.setValue("1");
-            noeud1.setAttributeNode(id);
-
-            noeud1.appendChild(titre);
-            noeud1.appendChild(couleur);
-            noeud1.appendChild(description);
-            noeud1.appendChild(forme);
-            noeud1.appendChild(x);
-            noeud1.appendChild(y);
-
-            Element noeud2 = xml.createElement("Noeud");
-            noeuds.appendChild(noeud2);
-
-            Attr id2 = xml.createAttribute("id");
-            id2.setValue("2");
-            noeud2.setAttributeNode(id2);
-
-            noeud2.appendChild(titre);
-            noeud2.appendChild(couleur);
-            noeud2.appendChild(description);
-            noeud2.appendChild(forme);
-            noeud2.appendChild(x);
-            noeud2.appendChild(y);
-
-            Element noeud3 = xml.createElement("Noeud");
-            noeuds.appendChild(noeud3);
-
-            Attr id3 = xml.createAttribute("id");
-            id3.setValue("3");
-            noeud3.setAttributeNode(id3);
-
-            noeud3.appendChild(titre);
-            noeud3.appendChild(couleur);
-            noeud3.appendChild(description);
-            noeud3.appendChild(forme);
-            noeud3.appendChild(x);
-            noeud3.appendChild(y);
-
-
-            // LIAISONS
-            Element type = xml.createElement("titre");
-            titre.appendChild(xml.createTextNode("Noeud principale"));
-
-            Element couleurLiaison = xml.createElement("Couleur");
-            couleurLiaison.appendChild(xml.createTextNode("Rouge"));
-
-            Element noeudPere = xml.createElement("NoeudPere");
-            description.appendChild(xml.createTextNode("je suis entrant d'ecrire une description !"));
-
-            Element noeudsFils = xml.createElement("NoeudsFils");
-            forme.appendChild(xml.createTextNode("Rectangle"));
-
-
-            //############# FIN DES AJOUT D'ELEMENTS################################
-            TransformerFactory transformerFactory = TransformerFactory.newInstance();
-            Transformer transformer = transformerFactory.newTransformer();
-            DOMSource source = new DOMSource(xml);
-            StreamResult resultat = new StreamResult(new File("MindMaps.xml"));
-            transformer.transform(source, resultat);
-            System.out.println("Fichier sauvegardé avec succès!");
-
-        } catch (ParserConfigurationException | TransformerException pce) {
-            pce.printStackTrace();
-        }
-    }
+//    // BROUILLON
+//    public static void ChangeXMLFile() {
+//
+//        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+//
+//        try {
+//            DocumentBuilder builder = factory.newDocumentBuilder();
+//            File fileXML = new File("MindMaps.xml");
+//
+//            Document xml = builder.parse(fileXML);
+//            Element MindMaps = xml.getDocumentElement();
+//
+//            //############# DEBUT DES MODFICATIONS ################################
+//            Node noeud = MindMaps.getFirstChild().getFirstChild().getFirstChild();
+//            NamedNodeMap attributes = noeud.getAttributes();
+//
+//            Node attr = attributes.getNamedItem("couleur");
+//            attr.setTextContent("vert");
+//
+//            Element age = xml.createElement("age");
+//            age.appendChild(xml.createTextNode("28"));
+//            noeud.appendChild(age);
+//            //############# FIN DES MODFICATION #################################
+//            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+//            Transformer transformer = transformerFactory.newTransformer();
+//            DOMSource source = new DOMSource(xml);
+//            StreamResult resultat = new StreamResult(new File("MindMaps.xml"));
+//            transformer.transform(source, resultat);
+//            System.out.println("Fichier modifier avec succès!");
+//
+//
+//        } catch (ParserConfigurationException | IOException | TransformerException | SAXException e) {
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    // BROUILLON
+//    public static void AfficherXMLFile() {
+//
+//        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+//        try {
+//            DocumentBuilder builder = factory.newDocumentBuilder();
+//            File fileXML = new File("MindMap.xml");
+//            Document xml = builder.parse(fileXML);
+//            Element MindMap = xml.getDocumentElement();
+//            System.out.println(MindMap.getFirstChild());
+//
+//            Node noeuds = MindMap.getFirstChild();
+//            System.out.println("\t" + noeuds.getNodeName());
+//            NodeList noeudsList = noeuds.getChildNodes();
+//            for (int n = 0; n < noeudsList.getLength(); n++) {
+//                Node noeud = noeudsList.item(n);
+//                System.out.println("\t\t" + noeud.getNodeName());
+//                NodeList attributesList = noeud.getChildNodes();
+//                for (int a = 0; a < attributesList.getLength(); a++) {
+//                    Node attribut = attributesList.item(a);
+//                    System.out.println("\t\t\t" + attribut.getNodeName() + " = " + attribut.getTextContent());
+//                }
+//            }
+//            Node liaisons = MindMap.getFirstChild();
+//            NodeList liaisonsList = liaisons.getChildNodes();
+//            for (int l = 0; l < liaisonsList.getLength(); l++) {
+//                Node liaison = liaisonsList.item(l);
+//                System.out.println("\t\t" + liaison.getNodeName());
+//                NodeList attributesList = liaison.getChildNodes();
+//                for (int a = 0; a < attributesList.getLength(); a++) {
+//                    Node attribut = attributesList.item(a);
+//                    System.out.println("\t\t\t" + attribut.getNodeName());
+//                }
+//            }
+//            //############# FIN DES l'affichage #################################
+//
+//
+//        } catch (ParserConfigurationException | IOException | SAXException e) {
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    // BROUILLON
+//    public static void CreateXMLFile() {
+//        try {
+//            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+//            DocumentBuilder builder = factory.newDocumentBuilder();
+//
+//            Document xml = builder.newDocument();
+//            Element mindMaps = xml.createElement("MindMaps");
+//            xml.appendChild(mindMaps);
+//            //############# DEBUT DES AJOUT D'ELEMENTS################################
+//            // STRCUTURE
+//            Element mindMap = xml.createElement("MindMap");
+//            mindMaps.appendChild(mindMap);
+//
+//            Element noeuds = xml.createElement("Noeuds");
+//            mindMap.appendChild(noeuds);
+//
+//            Element liaisons = xml.createElement("Liaisons");
+//            mindMap.appendChild(liaisons);
+//
+//            // CONTENU
+//
+//            //NOEUDS
+//
+//            Element titre = xml.createElement("titre");
+//            titre.appendChild(xml.createTextNode("Noeud principale"));
+//
+//            Element couleur = xml.createElement("Couleur");
+//            couleur.appendChild(xml.createTextNode("Rouge"));
+//
+//            Element description = xml.createElement("Description");
+//            description.appendChild(xml.createTextNode("je suis entrant d'ecrire une description !"));
+//
+//            Element forme = xml.createElement("Forme");
+//            forme.appendChild(xml.createTextNode("Rectangle"));
+//
+//            Element x = xml.createElement("X");
+//            x.appendChild(xml.createTextNode("10"));
+//
+//            Element y = xml.createElement("Y");
+//            y.appendChild(xml.createTextNode("20"));
+//
+//            Element noeud1 = xml.createElement("Noeud");
+//            noeuds.appendChild(noeud1);
+//
+//            Attr id = xml.createAttribute("id");
+//            id.setValue("1");
+//            noeud1.setAttributeNode(id);
+//
+//            noeud1.appendChild(titre);
+//            noeud1.appendChild(couleur);
+//            noeud1.appendChild(description);
+//            noeud1.appendChild(forme);
+//            noeud1.appendChild(x);
+//            noeud1.appendChild(y);
+//
+//            Element noeud2 = xml.createElement("Noeud");
+//            noeuds.appendChild(noeud2);
+//
+//            Attr id2 = xml.createAttribute("id");
+//            id2.setValue("2");
+//            noeud2.setAttributeNode(id2);
+//
+//            noeud2.appendChild(titre);
+//            noeud2.appendChild(couleur);
+//            noeud2.appendChild(description);
+//            noeud2.appendChild(forme);
+//            noeud2.appendChild(x);
+//            noeud2.appendChild(y);
+//
+//            Element noeud3 = xml.createElement("Noeud");
+//            noeuds.appendChild(noeud3);
+//
+//            Attr id3 = xml.createAttribute("id");
+//            id3.setValue("3");
+//            noeud3.setAttributeNode(id3);
+//
+//            noeud3.appendChild(titre);
+//            noeud3.appendChild(couleur);
+//            noeud3.appendChild(description);
+//            noeud3.appendChild(forme);
+//            noeud3.appendChild(x);
+//            noeud3.appendChild(y);
+//
+//
+//            // LIAISONS
+//            Element type = xml.createElement("titre");
+//            titre.appendChild(xml.createTextNode("Noeud principale"));
+//
+//            Element couleurLiaison = xml.createElement("Couleur");
+//            couleurLiaison.appendChild(xml.createTextNode("Rouge"));
+//
+//            Element noeudPere = xml.createElement("NoeudPere");
+//            description.appendChild(xml.createTextNode("je suis entrant d'ecrire une description !"));
+//
+//            Element noeudsFils = xml.createElement("NoeudsFils");
+//            forme.appendChild(xml.createTextNode("Rectangle"));
+//
+//
+//            //############# FIN DES AJOUT D'ELEMENTS################################
+//            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+//            Transformer transformer = transformerFactory.newTransformer();
+//            DOMSource source = new DOMSource(xml);
+//            StreamResult resultat = new StreamResult(new File("MindMaps.xml"));
+//            transformer.transform(source, resultat);
+//            System.out.println("Fichier sauvegardé avec succès!");
+//
+//        } catch (ParserConfigurationException | TransformerException pce) {
+//            pce.printStackTrace();
+//        }
+//    }
 }

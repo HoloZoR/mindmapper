@@ -5,17 +5,22 @@ import Utils.Mouvement;
 import Utils.Observe;
 
 import javax.swing.*;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultHighlighter;
+import javax.swing.text.Highlighter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class FenetrePrincipal extends Observe implements ActionListener {
-    private final int WINDOWWIDTH = 640;
-    private final int WINDOWHEIGHT = 480;
-    private final int NOEUDWIDTH = 100;
-    private final int NOEUDHEIGHT = 100;
+    public final int WINDOWWIDTH = 640;
+    public final int WINDOWHEIGHT = 480;
+    public final int NOEUDWIDTH = 100;
+    public final int NOEUDHEIGHT = 100;
 
+    private int nodeIds =0;
     private ToolBar toolBar;
     private Surface surface;
     private HashMap<JTextField, JPanel> noeuds;
@@ -67,6 +72,10 @@ public class FenetrePrincipal extends Observe implements ActionListener {
         this.surface = surface;
     }
 
+    public Mouvement getMv() {
+        return mv;
+    }
+
     public ToolBar getToolBar() {
         return toolBar;
     }
@@ -76,6 +85,7 @@ public class FenetrePrincipal extends Observe implements ActionListener {
     }
 
     public void ajouterNoeud() {
+
         JTextField textField = new JTextField("Noeud Principale");
         textField.addActionListener(this);
         textField.setActionCommand("TextNoeud");
@@ -88,13 +98,16 @@ public class FenetrePrincipal extends Observe implements ActionListener {
         pan.add(new JLabel(""));
         pan.add(new JLabel(""));
 
+
+        nodeIds++;
+        pan.setName(""+nodeIds); // pour identifier les noeud
+
         noeuds.put(textField, pan);
         surface.add(pan);
         mv.addListener(pan);
 
         revalidate();
     }
-
 
     public Commandes getTypeAction() {
         return typeAction;

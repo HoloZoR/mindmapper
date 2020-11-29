@@ -22,7 +22,10 @@ public class ToolBar extends Observe implements ActionListener {
     private JButton btnAjouterLiaison;
     private JButton btnSupprimerNoeud;
     private JButton btnLoop;
+    private JButton btnReplace;
     private JTextField searchField;
+    private JLabel replaceLabel;
+    private JTextField replaceField;
 
     public ToolBar() {
 
@@ -63,6 +66,7 @@ public class ToolBar extends Observe implements ActionListener {
         btnAjouterLiaison.addActionListener(this);
         btnAjouterLiaison.setActionCommand("Liaison");
         toolBar.add( btnAjouterLiaison, BorderLayout.CENTER );
+
         btnSupprimerNoeud = new JButton(new ImageIcon( "icons/Supp.png" ));
         btnSupprimerNoeud.setToolTipText( "Supprimer un noeuds" );
         btnSupprimerNoeud.addActionListener(this);
@@ -77,8 +81,24 @@ public class ToolBar extends Observe implements ActionListener {
         toolBar.add(btnLoop, BorderLayout.EAST);
 
         searchField = new JTextField( "" );
-        searchField.setMaximumSize(new Dimension(200,40));
+        searchField.setMaximumSize(new Dimension(150,40));
         toolBar.add(searchField, BorderLayout.EAST);
+
+        replaceLabel = new JLabel("Remplacer par");
+        replaceLabel.setVisible(false);
+        toolBar.add(replaceLabel, BorderLayout.EAST);
+
+        replaceField= new JTextField( "" );
+        replaceField.setMaximumSize(new Dimension(150,40));
+        replaceField.setVisible(false);
+        toolBar.add(replaceField, BorderLayout.EAST);
+
+        btnReplace = new JButton(new ImageIcon( "icons/Replace.png" ));
+        btnReplace.setToolTipText( "remplacer les mots trouvés par" );
+        btnReplace.addActionListener(this);
+        btnReplace.setActionCommand("Replace");
+        btnReplace.setVisible(false);
+        toolBar.add(btnReplace, BorderLayout.EAST);
     }
 
     public JToolBar getToolBar(){
@@ -126,9 +146,29 @@ public class ToolBar extends Observe implements ActionListener {
                 m.type = Commandes.RECHERCHER;
                 super.notifierObservateur(m);
                 break;
+            case "Replace":
+                m.type = Commandes.REMPLACER;
+                super.notifierObservateur(m);
+                break;
             default:
                 // code block
         }
     }
 
+    public JTextField getSearchField() {
+        return searchField;
+    }
+
+    public void setSearchField(JTextField searchField) {
+        this.searchField = searchField;
+    }
+    public void setReplaceVisible(boolean rep){
+        replaceField.setVisible(rep);
+        replaceLabel.setVisible(rep);
+        btnReplace.setVisible(rep);
+    }
+
+    public JTextField getReplaceField() {
+        return replaceField;
+    }
 }
