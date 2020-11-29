@@ -85,6 +85,7 @@ public class FenetrePrincipal extends Observe implements ActionListener {
     }
 
     public void ajouterNoeud() {
+        nodeIds++;
         JLabel textLabel = new JLabel("Noeud");
         textLabel.addMouseListener(new MouseAdapter() {
             @Override
@@ -104,9 +105,24 @@ public class FenetrePrincipal extends Observe implements ActionListener {
         pan.setSize(NOEUDWIDTH, NOEUDHEIGHT);
         pan.add(textLabel);
         pan.add(textArea);
-        pan.add(new JLabel(""));
 
-        nodeIds++;
+        JButton btnUpSize = new JButton(new ImageIcon( "icons/up.png" ));
+        btnUpSize.addActionListener(this);
+        btnUpSize.setActionCommand("up");
+        btnUpSize.setName(""+nodeIds);
+
+        JButton btnDownSize = new JButton(new ImageIcon( "icons/down.png" ));
+        btnDownSize.addActionListener(this);
+        btnDownSize.setActionCommand("down");
+        btnDownSize.setName(""+nodeIds);
+
+        JPanel pan1 = new JPanel();
+        pan1.setLayout(new GridLayout(2, 2));
+        pan1.add(btnUpSize);
+        pan1.add(btnDownSize);
+
+        pan.add(pan1);
+
         pan.setName(""+nodeIds); // pour identifier les noeuds
 
         noeuds.put(textLabel, pan);
@@ -123,10 +139,9 @@ public class FenetrePrincipal extends Observe implements ActionListener {
         JPanel pan = noeuds.get(text);
         noeuds.remove(text, pan);
         noeuds.put(txtTextField, pan);
-        pan.removeAll();
-        pan.add(txtTextField);
-        pan.add(new JLabel(""));
-        pan.add(new JLabel(""));
+        int indice = getComponentIndex(text);
+        pan.remove(text);
+        pan.add(txtTextField, indice);
         revalidate();
         repaint();
     }
@@ -161,6 +176,28 @@ public class FenetrePrincipal extends Observe implements ActionListener {
             return true;
         }
     }
+
+    private void changeSize(JButton button, int val1, int val2) {
+        for (Map.Entry m : noeuds.entrySet()) {
+            JPanel panel = (JPanel) m.getValue();
+            if(panel.getName().equals(button.getName()) ) {
+                panel.setSize(panel.getWidth()+val1, panel.getHeight()+val2);
+            }
+        }
+        revalidate();
+        repaint();
+    }
+    public int getComponentIndex(Component component) {
+        if (component != null && component.getParent() != null) {
+            Container c = component.getParent();
+            for (int i = 0; i < c.getComponentCount(); i++) {
+                if (c.getComponent(i) == component)
+                    return i;
+            }
+        }
+
+        return -1;
+    }
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
         String action = actionEvent.getActionCommand();
@@ -179,12 +216,20 @@ public class FenetrePrincipal extends Observe implements ActionListener {
                 JPanel pan = noeuds.get(text);
                 noeuds.remove(text, pan);
                 noeuds.put(txt, pan);
-                pan.removeAll();
-                pan.add(txt);
-                pan.add(new JLabel(""));
-                pan.add(new JLabel(""));
+                int indice = getComponentIndex(text);
+                pan.remove(text);
+                pan.add(txt, indice);
+
                 revalidate();
                 repaint();
+                break;
+            case "up":
+                JButton button = (JButton) actionEvent.getSource();
+                changeSize(button, 10, 10);
+                break;
+            case "down":
+                JButton buttonDown = (JButton) actionEvent.getSource();
+                changeSize(buttonDown, -10, -10);
                 break;
             default:
                 // code block
