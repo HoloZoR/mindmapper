@@ -2,6 +2,9 @@ package Model;
 
 import java.util.ArrayList;
 
+/**
+ * Represente un noeud de la carte mental
+ */
 public class Noeud implements Actions {
     private int id;
     private String titre;

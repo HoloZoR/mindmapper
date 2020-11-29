@@ -10,7 +10,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-
+/**
+ * Represente la bar des outils et permet diffrente action utilise le pattern observeur
+ */
 public class ToolBar extends Observe implements ActionListener {
 
     private JToolBar toolBar;
@@ -113,6 +115,9 @@ public class ToolBar extends Observe implements ActionListener {
         return this.toolBar.getHeight();
     }
 
+    /**
+     * Gere tous les actions de la toolbar New, save, addnode, ...s
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         String action = e.getActionCommand();

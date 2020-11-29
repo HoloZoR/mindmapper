@@ -14,6 +14,9 @@ import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Fenetre principal de l'application elle gere tous l'interaction
+ */
 public class FenetrePrincipal extends Observe implements ActionListener {
     public final int WINDOWWIDTH = 640;
     public final int WINDOWHEIGHT = 480;
@@ -35,7 +38,6 @@ public class FenetrePrincipal extends Observe implements ActionListener {
 
         noeuds = new HashMap<>();
         toolBar = new ToolBar();
-
 
         this.add(surface);
         this.add(toolBar.getToolBar(), BorderLayout.NORTH);
@@ -84,6 +86,9 @@ public class FenetrePrincipal extends Observe implements ActionListener {
         this.toolBar = toolBar;
     }
 
+    /**
+     * Ajoute un noeud au workflow de l'application
+     */
     public void ajouterNoeud() {
         nodeIds++;
         JLabel textLabel = new JLabel("Noeud");
@@ -137,6 +142,10 @@ public class FenetrePrincipal extends Observe implements ActionListener {
         revalidate();
     }
 
+    /**
+     * Change un JLabel du neoud en txtTextField
+     * @parm text
+     */
     public void changeText(JLabel text) {
         JTextField txtTextField = new JTextField(text.getText());
         txtTextField.addActionListener(FenetrePrincipal.this::actionPerformed);
@@ -159,17 +168,25 @@ public class FenetrePrincipal extends Observe implements ActionListener {
         this.typeAction = typeAction;
     }
 
+    /**
+     * utilise un compteur pour créer un lien
+     */
     public void creerLien() {
         setTypeAction(Commandes.CREERLIEN);
         if(compteur == -1) {
             compteur = 0;
         }
     }
-
+    /**
+     * Permet de supprimer un noeud de l'application
+     */
     public void supprimerNoeud(){
         setTypeAction(Commandes.SUPPRIMER);
     }
 
+    /**
+     * Gère le compteur pour créer des liens
+     */
     public boolean incrementeCompteur() {
         if(compteur == -1) {
             return false;
@@ -192,6 +209,11 @@ public class FenetrePrincipal extends Observe implements ActionListener {
         revalidate();
         repaint();
     }
+
+    /**
+     * Donne l'index d'un composant dans sont parent
+     * @param component
+     */
     public int getComponentIndex(Component component) {
         if (component != null && component.getParent() != null) {
             Container c = component.getParent();
@@ -202,6 +224,10 @@ public class FenetrePrincipal extends Observe implements ActionListener {
         }
         return -1;
     }
+
+    /**
+     * Gère event grandir raptissir noeud et JFieldText
+     */
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
         String action = actionEvent.getActionCommand();

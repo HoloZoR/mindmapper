@@ -1,5 +1,8 @@
 package Model;
 
+/**
+ * Represente les arrêtes entre les noeud de la carte mental
+ */
 public class Liaison {
     private String type;
     private String couleur;

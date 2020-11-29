@@ -24,6 +24,9 @@ import Vue.FenetrePrincipal;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
+/**
+ * Permet de sauvegarde et de charger des fichiers XML
+ */
 public class SaveAndLoad {
 
     public static void ModelToXml(ArrayList<Noeud> noeuds, String pathname) {

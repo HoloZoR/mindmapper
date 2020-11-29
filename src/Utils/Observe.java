@@ -4,6 +4,9 @@ import Utils.Observateur;
 
 import javax.swing.*;
 
+/**
+ * Implementé pour le pattern observeur
+ */
 public class Observe extends JFrame {
     private Observateur observateur;
 

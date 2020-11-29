@@ -11,6 +11,10 @@ import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
 
+/**
+ * Controller de l'application
+ * il relie la vue et le model
+ */
 public class Controleur implements Observateur {
     private FenetrePrincipal fenetre;
     private String pathname = "";
@@ -22,6 +26,11 @@ public class Controleur implements Observateur {
         fenetre.getToolBar().addObsevateur(this);
     }
 
+    /**
+     * traite les messages du pattern observeur
+     * @param m
+     * @return void
+     */
     @Override
     public void traiterMessage(Message m) {
         final JFileChooser fc = new JFileChooser();

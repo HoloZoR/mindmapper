@@ -10,6 +10,9 @@ import javax.swing.text.Highlighter;
 import java.awt.*;
 import java.util.Map;
 
+/**
+ * Permet de rechercher dans les noeuds de la carte mental
+ */
 public class Recherche {
 
     public static Boolean rechercherMot(String mot, FenetrePrincipal fenetre){

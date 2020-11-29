@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * c'est l'interface graphique de la carte mental les noeuds et liaisons sont dessiner dans celle-ci
+ */
 public class Surface extends JPanel {
     private ArrayList<Component> liaisons;
 
@@ -26,6 +29,10 @@ public class Surface extends JPanel {
         this.liaisons = liaisons;
     }
 
+    /**
+     * Dessine les liaisons de l'application
+     * @param g
+     */
     public void paintComponent(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(Color.darkGray);

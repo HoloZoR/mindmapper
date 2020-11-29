@@ -9,6 +9,9 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 
+/**
+ * Elle permet de gerer le déclapement des noeuds dans la surface
+ */
 public class Mouvement implements MouseListener, MouseMotionListener {
 
     private int X, Y;
@@ -17,11 +20,19 @@ public class Mouvement implements MouseListener, MouseMotionListener {
         this.fenetre = fenetre;
     }
 
+    /**
+     * Ajout de mouse listener au panel passé en param ici panel represente un noeud
+     * @param panel
+     */
     public void addListener(JPanel panel) {
         panel.addMouseListener(this);
         panel.addMouseMotionListener(this);
     }
 
+    /**
+     * Lors d'un clique sur un noeud créer un lien ou le supprime
+     * @param mouseEvent
+     */
     @Override
     public void mouseClicked(MouseEvent mouseEvent) {
         if (fenetre.getTypeAction() == Commandes.CREERLIEN && fenetre.incrementeCompteur()) {
@@ -69,6 +80,10 @@ public class Mouvement implements MouseListener, MouseMotionListener {
 
     }
 
+    /**
+     * Permet de déplacer les noeuds
+     * @param mouseEvent
+     */
     @Override
     public void mouseDragged(MouseEvent mouseEvent) {
         int x = (mouseEvent.getX() + mouseEvent.getComponent().getX()) - X;
