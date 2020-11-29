@@ -53,7 +53,6 @@ public class Mouvement implements MouseListener, MouseMotionListener {
             fenetre.getNoeuds().values().remove(mouseEvent.getComponent());
             fenetre.getSurface().remove(mouseEvent.getComponent());
             fenetre.setTypeAction(null);
-            fenetre.nodeIds-=1;
         }
         fenetre.repaint();
         fenetre.getSurface().repaint();

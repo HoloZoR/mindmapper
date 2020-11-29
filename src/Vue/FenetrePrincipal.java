@@ -86,6 +86,13 @@ public class FenetrePrincipal extends Observe implements ActionListener {
      */
     public void ajouterNoeud() {
         nodeIds++;
+        for (Map.Entry m : noeuds.entrySet()) {
+            JPanel panel = (JPanel) m.getValue();
+            int id = Integer.parseInt(panel.getName());
+            if (id>=nodeIds){
+                nodeIds = id + 1;
+            }
+        }
 
         JLabel textLabel = new JLabel("Noeud");
         textLabel.setName(""+nodeIds);
@@ -132,7 +139,7 @@ public class FenetrePrincipal extends Observe implements ActionListener {
         revalidate();
     }
     public void ajouterNoeudWithModel(int id ,String titre, String description,double x,double y) {
-        nodeIds++;
+
         JLabel textLabel = new JLabel(titre);
         textLabel.setName("" + id);
         textLabel.addMouseListener(labelListener());
@@ -233,6 +240,7 @@ public class FenetrePrincipal extends Observe implements ActionListener {
      */
     public void supprimerNoeud(){
         setTypeAction(Commandes.SUPPRIMER);
+
     }
 
     /**
