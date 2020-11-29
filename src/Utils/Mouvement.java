@@ -34,6 +34,7 @@ public class Mouvement implements MouseListener, MouseMotionListener {
                     if (liaisons.get(i).equals(mouseEvent.getComponent()) || (liaisons.get(i + 1).equals(mouseEvent.getComponent()))) {
                         liaisons.remove(i + 1);
                         liaisons.remove(i);
+                        i -= 2;
                     }
                 }
             }

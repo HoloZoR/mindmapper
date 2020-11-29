@@ -91,6 +91,7 @@ public class FenetrePrincipal extends Observe implements ActionListener {
         textField.addActionListener(this);
         textField.setActionCommand("TextNoeud");
 
+
         JPanel pan = new JPanel();
         pan.setBorder(new BevelBorder(BevelBorder.RAISED));
         pan.setBackground(Color.decode("#FFE4C4"));
