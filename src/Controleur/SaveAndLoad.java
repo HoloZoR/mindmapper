@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.*;
-import javax.swing.border.BevelBorder;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -50,14 +49,8 @@ public class SaveAndLoad {
                 Element titre = xml.createElement("titre");
                 titre.appendChild(xml.createTextNode(n.getTitre()));
 
-//                Element couleur = xml.createElement("Couleur");
-//                couleur.appendChild(xml.createTextNode(n.getCouleur()));
-
                 Element description = xml.createElement("Description");
                 description.appendChild(xml.createTextNode(n.getDescription()));
-
-//                Element forme = xml.createElement("Forme");
-//                forme.appendChild(xml.createTextNode(n.getForme()));
 
                 Element x = xml.createElement("X");
                 x.appendChild(xml.createTextNode("" + n.getX()));
@@ -73,18 +66,13 @@ public class SaveAndLoad {
                 noeud.setAttributeNode(id);
 
                 noeud.appendChild(titre);
-//                noeud.appendChild(couleur);
                 noeud.appendChild(description);
-//                noeud.appendChild(forme);
                 noeud.appendChild(x);
                 noeud.appendChild(y);
 
                 noeudsXml.appendChild(noeud);
 
                 for (Liaison l : n.getLiaisonFils()) {
-
-//                    Element couleurLiaison = xml.createElement("Couleur");
-//                    couleurLiaison.appendChild(xml.createTextNode("Rouge"));
 
                     Element noeudPere = xml.createElement("Pere");
                     noeudPere.appendChild(xml.createTextNode("" + l.getNoeudPere().getId()));
@@ -136,9 +124,7 @@ public class SaveAndLoad {
                 Node noeudXml = listNoeuds.item(i);
 
                 Node titre = noeudXml.getFirstChild();
-//                Node couleur = titre.getNextSibling();
                 Node description = titre.getNextSibling();
-//                Node forme = description.getNextSibling();
                 Node x = description.getNextSibling();
                 Node y = x.getNextSibling();
                 NamedNodeMap attr = noeudXml.getAttributes();
@@ -184,33 +170,22 @@ public class SaveAndLoad {
 
         for (Noeud noeud: noeuds) {
 
-            JTextField textField = new JTextField(noeud.getTitre());
-            textField.addActionListener(fenetre);
-            textField.setActionCommand("TextNoeud");
+            fenetre.ajouterNoeudWithModel(
+                    noeud.getId(),
+                    noeud.getTitre(),
+                    noeud.getDescription(),
+                    noeud.getX(),
+                    noeud.getY()
+            );
 
-            JPanel pan = new JPanel();
-            pan.setBorder(new BevelBorder(BevelBorder.RAISED));
-            pan.setBackground(Color.decode("#FFE4C4"));
-            pan.setLayout(new GridLayout(3, 1));
-            pan.setSize(fenetre.NOEUDWIDTH, fenetre.NOEUDHEIGHT);
-            pan.setLocation((int) noeud.getX(),(int)noeud.getY());
-            pan.add(textField);
 
-            //TODO : AJOUTER DESCRIPTION
-
-            pan.add(new JLabel(""));
-            pan.add(new JLabel(""));
-
-            fenetre.nodeIds++;
-            pan.setName(""+noeud.getId());
-
-            fenetre.getNoeuds().put(textField, pan);
-            fenetre.getSurface().add(pan);
-            fenetre.getMv().addListener(pan);
-
-            noeudsView.put(noeud.getId(), pan);
             liaisons.addAll(noeud.getLiaisonFils());
         }
+        for (Map.Entry m : fenetre.getNoeuds().entrySet()) {
+            JPanel panel = (JPanel) m.getValue();
+            noeudsView.put(Integer.parseInt(panel.getName()), panel);
+        }
+
 
         for (Liaison l: liaisons) {
             JPanel pere = noeudsView.get(l.getNoeudPere().getId());
@@ -226,12 +201,12 @@ public class SaveAndLoad {
 
         for (Map.Entry m : fenetre.getNoeuds().entrySet()) {
             JPanel panel = (JPanel) m.getValue();
-            JTextField textField = (JTextField) m.getKey();
+            JTextField titreField = (JTextField) panel.getComponent(0);
+            JTextArea descriptionField = (JTextArea) panel.getComponent(1);
 
             int id = Integer.parseInt(panel.getName());
-            String titre = textField.getText();
-            //TODO : AJOUTER DESCRIPTION
-            String description = "";
+            String titre = titreField.getText();
+            String description = descriptionField.getText();
 
             double x = panel.getX();
             double y = panel.getY();
@@ -254,7 +229,6 @@ public class SaveAndLoad {
             listLiaisonsSansDoublons.put(panelPere.getName()+"-"+panelFils.getName(),liaison);
         }
 
-        System.out.println(listLiaisonsSansDoublons.toString());
         for (Map.Entry l : listLiaisonsSansDoublons.entrySet()) {
             Liaison liaison = (Liaison) l.getValue();
             noeudsMap.get(liaison.getNoeudPere().getId()).addLiaisonFils(liaison);

@@ -7,10 +7,7 @@ import Utils.Observe;
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -57,33 +54,31 @@ public class FenetrePrincipal extends Observe implements ActionListener {
         surface = new Surface();
         surface.setSize(getSize());
     }
+    public void allLabelToTextfield() {
+        for (Map.Entry m : noeuds.entrySet()) {
+            JPanel panel = (JPanel)  m.getValue();
+            try {
+                JTextField textField = (JTextField) panel.getComponent(0);
+            } catch (ClassCastException e) {
+                JLabel label = (JLabel) panel.getComponent(0);
+                labelToTextField(label);
+            }
+        }
+        revalidate();
 
-    public HashMap<Component, JPanel> getNoeuds() {
-        return noeuds;
     }
+    public void allTextFieldToLabel() {
+        for (Map.Entry m : noeuds.entrySet()) {
+            JPanel panel = (JPanel)  m.getValue();
+            try {
+                JLabel label = (JLabel) panel.getComponent(0);
+            } catch (ClassCastException e) {
+                JTextField textField = (JTextField) panel.getComponent(0);
+                textFieldToLabel(textField);
+            }
+        }
+        revalidate();
 
-    public void setNoeuds(HashMap<Component, JPanel> noeuds) {
-        this.noeuds = noeuds;
-    }
-
-    public Surface getSurface() {
-        return surface;
-    }
-
-    public void setSurface(Surface surface) {
-        this.surface = surface;
-    }
-
-    public Mouvement getMv() {
-        return mv;
-    }
-
-    public ToolBar getToolBar() {
-        return toolBar;
-    }
-
-    public void setToolBar(ToolBar toolBar) {
-        this.toolBar = toolBar;
     }
 
     /**
@@ -91,23 +86,20 @@ public class FenetrePrincipal extends Observe implements ActionListener {
      */
     public void ajouterNoeud() {
         nodeIds++;
-        JLabel textLabel = new JLabel("Noeud");
-        textLabel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                JLabel text = (JLabel) e.getComponent();
-                changeText(text);
-            }
-        });
 
-        JTextArea textArea = new JTextArea("ecrit une descri\nption ici");
+        JLabel textLabel = new JLabel("Noeud");
+        textLabel.setName(""+nodeIds);
+        textLabel.addMouseListener(labelListener());
+
+        JTextArea textArea = new JTextArea("description");
 
         JPanel pan = new JPanel();
         pan.setBorder(new BevelBorder(BevelBorder.RAISED));
         pan.setBackground(Color.decode("#FFE4C4"));
         pan.setLayout(new GridLayout(4, 1));
         pan.setSize(NOEUDWIDTH, NOEUDHEIGHT);
+        pan.setName(""+nodeIds); // pour identifier les noeuds
+
         pan.add(textLabel);
         pan.add(textArea);
 
@@ -133,39 +125,98 @@ public class FenetrePrincipal extends Observe implements ActionListener {
         pan.add(new JLabel(""));
         pan.add(pan1);
 
-        pan.setName(""+nodeIds); // pour identifier les noeuds
-
         noeuds.put(textLabel, pan);
         surface.add(pan);
         mv.addListener(pan);
 
         revalidate();
     }
+    public void ajouterNoeudWithModel(int id ,String titre, String description,double x,double y) {
+        nodeIds++;
+        JLabel textLabel = new JLabel(titre);
+        textLabel.setName("" + id);
+        textLabel.addMouseListener(labelListener());
+
+        JTextArea textArea = new JTextArea(description);
+
+        JPanel pan = new JPanel();
+        pan.setBorder(new BevelBorder(BevelBorder.RAISED));
+        pan.setBackground(Color.decode("#FFE4C4"));
+        pan.setLocation((int) x, (int) y);
+        pan.setLayout(new GridLayout(4, 1));
+        pan.setSize(NOEUDWIDTH, NOEUDHEIGHT);
+        pan.setName("" + id); // pour identifier les noeuds
+
+        pan.add(textLabel);
+        pan.add(textArea);
+
+        JButton btnUpSize = new JButton(new ImageIcon("icons/up.png"));
+        btnUpSize.addActionListener(this);
+        btnUpSize.setActionCommand("up");
+        btnUpSize.setName("" + id);
+
+        JButton btnDownSize = new JButton(new ImageIcon("icons/down.png"));
+        btnDownSize.addActionListener(this);
+        btnDownSize.setActionCommand("down");
+        btnDownSize.setName("" + id);
+
+        JPanel pan1 = new JPanel();
+        pan1.setBackground(Color.decode("#FFE4C4"));
+        pan1.setLayout(new GridLayout(1, 5));
+        pan1.add(new JLabel(""));
+        pan1.add(new JLabel(""));
+        pan1.add(new JLabel(""));
+        pan1.add(btnUpSize);
+        pan1.add(btnDownSize);
+
+        pan.add(new JLabel(""));
+        pan.add(pan1);
+
+        noeuds.put(textLabel, pan);
+        surface.add(pan);
+        mv.addListener(pan);
+    }
+    public MouseAdapter labelListener(){
+        return new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                JLabel label = (JLabel) e.getComponent();
+                labelToTextField(label);
+            }
+        };
+    }
 
     /**
      * Change un JLabel du neoud en txtTextField
      * @parm text
      */
-    public void changeText(JLabel text) {
-        JTextField txtTextField = new JTextField(text.getText());
-        txtTextField.addActionListener(FenetrePrincipal.this::actionPerformed);
-        txtTextField.setActionCommand("TextNoeud");
-        JPanel pan = noeuds.get(text);
-        noeuds.remove(text, pan);
-        noeuds.put(txtTextField, pan);
-        int indice = getComponentIndex(text);
-        pan.remove(text);
-        pan.add(txtTextField, indice);
+    public void labelToTextField(JLabel label) {
+        JTextField textField = new JTextField(label.getText());
+        textField.setName(label.getName());
+        textField.addActionListener(FenetrePrincipal.this::actionPerformed);
+        textField.setActionCommand("TextNoeud");
+        for (Map.Entry m : noeuds.entrySet()) {
+            JPanel panel = (JPanel)  m.getValue();
+            if (panel.getName().equalsIgnoreCase(label.getName())){
+                panel.remove(0);
+                panel.add(textField,0);
+            }
+        }
         revalidate();
-        repaint();
     }
-
-    public Commandes getTypeAction() {
-        return typeAction;
-    }
-
-    public void setTypeAction(Commandes typeAction) {
-        this.typeAction = typeAction;
+    public void textFieldToLabel(JTextField textField) {
+        JLabel label = new JLabel(textField.getText());
+        label.setName(textField.getName());
+        label.addMouseListener(labelListener());
+        for (Map.Entry m : noeuds.entrySet()) {
+            JPanel panel = (JPanel)  m.getValue();
+            if (panel.getName().equalsIgnoreCase(label.getName())){
+                panel.remove(0);
+                panel.add(label,0);
+            }
+        }
+        revalidate();
     }
 
     /**
@@ -198,7 +249,6 @@ public class FenetrePrincipal extends Observe implements ActionListener {
             return true;
         }
     }
-
     private void changeSize(JButton button, int val1, int val2) {
         for (Map.Entry m : noeuds.entrySet()) {
             JPanel panel = (JPanel) m.getValue();
@@ -234,23 +284,7 @@ public class FenetrePrincipal extends Observe implements ActionListener {
         switch(action) {
             case "TextNoeud":
                 JTextField text = (JTextField) actionEvent.getSource();
-                JLabel txt = new JLabel(text.getText());
-                txt.addMouseListener(new MouseAdapter() {
-                    @Override
-                    public void mouseClicked(MouseEvent e) {
-                        super.mouseClicked(e);
-                        JLabel text = (JLabel) e.getComponent();
-                        changeText(text);
-                    }
-                });
-                JPanel pan = noeuds.get(text);
-                noeuds.remove(text, pan);
-                noeuds.put(txt, pan);
-                int indice = getComponentIndex(text);
-                pan.remove(text);
-                pan.add(txt, indice);
-                revalidate();
-                repaint();
+                textFieldToLabel(text);
                 break;
             case "up":
                 JButton button = (JButton) actionEvent.getSource();
@@ -264,4 +298,27 @@ public class FenetrePrincipal extends Observe implements ActionListener {
                 // code block
         }
     }
+
+    public HashMap<Component, JPanel> getNoeuds() {
+        return noeuds;
+    }
+
+
+    public Surface getSurface() {
+        return surface;
+    }
+
+
+    public ToolBar getToolBar() {
+        return toolBar;
+    }
+
+    public Commandes getTypeAction() {
+        return typeAction;
+    }
+
+    public void setTypeAction(Commandes typeAction) {
+        this.typeAction = typeAction;
+    }
+
 }

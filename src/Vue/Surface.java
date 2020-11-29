@@ -2,10 +2,7 @@ package Vue;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * c'est l'interface graphique de la carte mental les noeuds et liaisons sont dessiner dans celle-ci
