@@ -35,12 +35,10 @@ public class Controleur implements Observateur {
                 fenetre.addObsevateur(this);
                 fenetre.getToolBar().addObsevateur(this);
                 pathname="";
-
                 break;
+
             case OUVRIR:
-
                 int open = fc.showOpenDialog(fenetre);
-
                 if (open == JFileChooser.APPROVE_OPTION) {
                     File file = fc.getSelectedFile();
                     pathname = file.getAbsolutePath();
