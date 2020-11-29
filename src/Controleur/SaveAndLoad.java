@@ -47,14 +47,8 @@ public class SaveAndLoad {
                 Element titre = xml.createElement("titre");
                 titre.appendChild(xml.createTextNode(n.getTitre()));
 
-//                Element couleur = xml.createElement("Couleur");
-//                couleur.appendChild(xml.createTextNode(n.getCouleur()));
-
                 Element description = xml.createElement("Description");
                 description.appendChild(xml.createTextNode(n.getDescription()));
-
-//                Element forme = xml.createElement("Forme");
-//                forme.appendChild(xml.createTextNode(n.getForme()));
 
                 Element x = xml.createElement("X");
                 x.appendChild(xml.createTextNode("" + n.getX()));
@@ -70,18 +64,13 @@ public class SaveAndLoad {
                 noeud.setAttributeNode(id);
 
                 noeud.appendChild(titre);
-//                noeud.appendChild(couleur);
                 noeud.appendChild(description);
-//                noeud.appendChild(forme);
                 noeud.appendChild(x);
                 noeud.appendChild(y);
 
                 noeudsXml.appendChild(noeud);
 
                 for (Liaison l : n.getLiaisonFils()) {
-
-//                    Element couleurLiaison = xml.createElement("Couleur");
-//                    couleurLiaison.appendChild(xml.createTextNode("Rouge"));
 
                     Element noeudPere = xml.createElement("Pere");
                     noeudPere.appendChild(xml.createTextNode("" + l.getNoeudPere().getId()));
@@ -133,9 +122,7 @@ public class SaveAndLoad {
                 Node noeudXml = listNoeuds.item(i);
 
                 Node titre = noeudXml.getFirstChild();
-//                Node couleur = titre.getNextSibling();
                 Node description = titre.getNextSibling();
-//                Node forme = description.getNextSibling();
                 Node x = description.getNextSibling();
                 Node y = x.getNextSibling();
                 NamedNodeMap attr = noeudXml.getAttributes();
@@ -251,7 +238,6 @@ public class SaveAndLoad {
             listLiaisonsSansDoublons.put(panelPere.getName()+"-"+panelFils.getName(),liaison);
         }
 
-        System.out.println(listLiaisonsSansDoublons.toString());
         for (Map.Entry l : listLiaisonsSansDoublons.entrySet()) {
             Liaison liaison = (Liaison) l.getValue();
             noeudsMap.get(liaison.getNoeudPere().getId()).addLiaisonFils(liaison);

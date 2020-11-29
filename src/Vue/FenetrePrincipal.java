@@ -7,10 +7,7 @@ import Utils.Observe;
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,7 +33,6 @@ public class FenetrePrincipal extends Observe implements ActionListener {
         noeuds = new HashMap<>();
         toolBar = new ToolBar();
 
-
         this.add(surface);
         this.add(toolBar.getToolBar(), BorderLayout.NORTH);
         mv = new Mouvement(this);
@@ -55,7 +51,32 @@ public class FenetrePrincipal extends Observe implements ActionListener {
         surface = new Surface();
         surface.setSize(getSize());
     }
+    public void allLabelToTextfield() {
+        for (Map.Entry m : noeuds.entrySet()) {
+            JPanel panel = (JPanel)  m.getValue();
+            try {
+                JTextField textField = (JTextField) panel.getComponent(0);
+            } catch (ClassCastException e) {
+                JLabel label = (JLabel) panel.getComponent(0);
+                labelToTextField(label);
+            }
+        }
+        revalidate();
 
+    }
+    public void allTextFieldToLabel() {
+        for (Map.Entry m : noeuds.entrySet()) {
+            JPanel panel = (JPanel)  m.getValue();
+            try {
+                JLabel label = (JLabel) panel.getComponent(0);
+            } catch (ClassCastException e) {
+                JTextField textField = (JTextField) panel.getComponent(0);
+                textFieldToLabel(textField);
+            }
+        }
+        revalidate();
+
+    }
     public HashMap<Component, JPanel> getNoeuds() {
         return noeuds;
     }
@@ -85,29 +106,24 @@ public class FenetrePrincipal extends Observe implements ActionListener {
     }
 
     public void ajouterNoeud() {
-        JLabel textLabel = new JLabel("Noeud");
-        textLabel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                JLabel text = (JLabel) e.getComponent();
-                changeText(text);
-            }
-        });
+        nodeIds++;
 
-        JTextArea textArea = new JTextArea("ecrit une descri\nption ici");
+        JLabel textLabel = new JLabel("Noeud");
+        textLabel.setName(""+nodeIds);
+        textLabel.addMouseListener(labelListener());
+
+        JTextArea textArea = new JTextArea("description");
 
         JPanel pan = new JPanel();
         pan.setBorder(new BevelBorder(BevelBorder.RAISED));
         pan.setBackground(Color.decode("#FFE4C4"));
         pan.setLayout(new GridLayout(3, 1));
         pan.setSize(NOEUDWIDTH, NOEUDHEIGHT);
+        pan.setName(""+nodeIds); // pour identifier les noeuds
+
         pan.add(textLabel);
         pan.add(textArea);
         pan.add(new JLabel(""));
-
-        nodeIds++;
-        pan.setName(""+nodeIds); // pour identifier les noeuds
 
         noeuds.put(textLabel, pan);
         surface.add(pan);
@@ -115,20 +131,42 @@ public class FenetrePrincipal extends Observe implements ActionListener {
 
         revalidate();
     }
-
-    public void changeText(JLabel text) {
-        JTextField txtTextField = new JTextField(text.getText());
-        txtTextField.addActionListener(FenetrePrincipal.this::actionPerformed);
-        txtTextField.setActionCommand("TextNoeud");
-        JPanel pan = noeuds.get(text);
-        noeuds.remove(text, pan);
-        noeuds.put(txtTextField, pan);
-        pan.removeAll();
-        pan.add(txtTextField);
-        pan.add(new JLabel(""));
-        pan.add(new JLabel(""));
+    public MouseAdapter labelListener(){
+        return new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                JLabel label = (JLabel) e.getComponent();
+                labelToTextField(label);
+            }
+        };
+    }
+    public void labelToTextField(JLabel label) {
+        JTextField textField = new JTextField(label.getText());
+        textField.setName(label.getName());
+        textField.addActionListener(FenetrePrincipal.this::actionPerformed);
+        textField.setActionCommand("TextNoeud");
+        for (Map.Entry m : noeuds.entrySet()) {
+            JPanel panel = (JPanel)  m.getValue();
+            if (panel.getName().equalsIgnoreCase(label.getName())){
+                panel.remove(0);
+                panel.add(textField,0);
+            }
+        }
         revalidate();
-        repaint();
+    }
+    public void textFieldToLabel(JTextField textField) {
+        JLabel label = new JLabel(textField.getText());
+        label.setName(textField.getName());
+        label.addMouseListener(labelListener());
+        for (Map.Entry m : noeuds.entrySet()) {
+            JPanel panel = (JPanel)  m.getValue();
+            if (panel.getName().equalsIgnoreCase(label.getName())){
+                panel.remove(0);
+                panel.add(label,0);
+            }
+        }
+        revalidate();
     }
 
     public Commandes getTypeAction() {
@@ -167,24 +205,7 @@ public class FenetrePrincipal extends Observe implements ActionListener {
         switch(action) {
             case "TextNoeud":
                 JTextField text = (JTextField) actionEvent.getSource();
-                JLabel txt = new JLabel(text.getText());
-                txt.addMouseListener(new MouseAdapter() {
-                    @Override
-                    public void mouseClicked(MouseEvent e) {
-                        super.mouseClicked(e);
-                        JLabel text = (JLabel) e.getComponent();
-                        changeText(text);
-                    }
-                });
-                JPanel pan = noeuds.get(text);
-                noeuds.remove(text, pan);
-                noeuds.put(txt, pan);
-                pan.removeAll();
-                pan.add(txt);
-                pan.add(new JLabel(""));
-                pan.add(new JLabel(""));
-                revalidate();
-                repaint();
+                textFieldToLabel(text);
                 break;
             default:
                 // code block

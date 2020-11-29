@@ -72,9 +72,11 @@ public class Noeud implements Actions {
     public void setForme(String forme) {
         this.forme = forme;
     }
+
     public void addLiaisonFils(Liaison l ){
         this.liaisonFils.add(l);
     }
+
     public ArrayList<Liaison> getLiaisonFils() {
         return liaisonFils;
     }
@@ -107,20 +109,6 @@ public class Noeud implements Actions {
         this.y = y;
     }
 
-    public void affiche(){
-        System.out.println("Noeud : "+ this.getId());
-        System.out.println("\ttitre : "+ this.getTitre());
-        System.out.println("\tdescription : "+ this.getDescription());
-        System.out.println("\tforme : "+ this.getForme());
-        System.out.println("\tcouleur : "+ this.getCouleur());
-        System.out.println("\tx : "+ this.getX());
-        System.out.println("\tY : "+ this.getY());
-        System.out.println("\tLiaisonFils :");
-        for (Liaison l : this.getLiaisonFils()) {
-            System.out.println("\t\t "+l.getNoeudPere().getId()+" -> "+l.getNoeudFils().getId());
-        }
-
-    }
     @Override
     public boolean ajouterNoeud() {
         return false;
