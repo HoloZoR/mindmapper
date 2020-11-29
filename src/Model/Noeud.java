@@ -3,7 +3,6 @@ package Model;
 import java.util.ArrayList;
 
 public class Noeud implements Actions {
-    public static int nbNoeuds = 0;
     private int id;
     private String titre;
     private String couleur;
@@ -14,29 +13,23 @@ public class Noeud implements Actions {
     private ArrayList<Liaison> liaisonFils;
     private Liaison liaisonPere;
 
-    public Noeud(String titre, String couleur, String description, String forme, double x, double y) {
+    public Noeud(int id, String titre, String description, double x, double y) {
         this.titre = titre;
-        this.couleur = couleur;
         this.description = description;
-        this.forme = forme;
         this.x = x;
         this.y = y;
         this.liaisonPere = null;
         this.liaisonFils = new ArrayList<>();
-        nbNoeuds++;
-        this.id = nbNoeuds;
+        this.id = id;
     }
-    public Noeud(String titre, String couleur, String description, String forme, double x, double y, Liaison liaisonPere, Noeud noeudPere) {
+    public Noeud(int id, String titre, String couleur, String description, String forme, double x, double y) {
         this.titre = titre;
         this.couleur = couleur;
         this.description = description;
         this.forme = forme;
         this.x = x;
         this.y = y;
-        this.liaisonFils = new ArrayList<>();
-        this.liaisonPere = liaisonPere;
-        nbNoeuds++;
-        this.id = nbNoeuds;
+        this.id = id;
 
     }
 

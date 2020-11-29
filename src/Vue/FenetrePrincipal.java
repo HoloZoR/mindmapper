@@ -21,7 +21,7 @@ public class FenetrePrincipal extends Observe implements ActionListener {
     public final int NOEUDWIDTH = 100;
     public final int NOEUDHEIGHT = 100;
 
-    private int nodeIds =0;
+    public int nodeIds =0;
     private ToolBar toolBar;
     private Surface surface;
     private HashMap<JTextField, JPanel> noeuds;
@@ -101,10 +101,8 @@ public class FenetrePrincipal extends Observe implements ActionListener {
         pan.add(new JLabel(""));
         pan.add(new JLabel(""));
 
-
-
         nodeIds++;
-        pan.setName(""+nodeIds); // pour identifier les noeud
+        pan.setName(""+nodeIds); // pour identifier les noeuds
 
         noeuds.put(textField, pan);
         surface.add(pan);
