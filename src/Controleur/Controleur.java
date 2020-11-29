@@ -34,6 +34,7 @@ public class Controleur implements Observateur {
                 fenetre.setVisible(true);
                 fenetre.addObsevateur(this);
                 fenetre.getToolBar().addObsevateur(this);
+                pathname="";
 
                 break;
             case OUVRIR:
@@ -46,11 +47,18 @@ public class Controleur implements Observateur {
                 } else {
                     break;
                 }
+                fenetre.dispose();
+                this.fenetre = new FenetrePrincipal();
+                fenetre.setVisible(true);
+                fenetre.addObsevateur(this);
+                fenetre.getToolBar().addObsevateur(this);
 //                ArrayList<Noeud> noeads = new ArrayList<>();
 //                noeads = SaveAndLoad.XmlToModel(pathname);
 //                for (Noeud node: noeads) {
 //                    node.affiche();
 //                }
+                SaveAndLoad.ModelToView(SaveAndLoad.XmlToModel(pathname),fenetre);
+                fenetre.revalidate();
                 break;
             case SAVE:
                 if (pathname.isEmpty()) {
@@ -63,9 +71,7 @@ public class Controleur implements Observateur {
                         break;
                     }
                 }
-//               noeuds = SaveAndLoad.VueToModel(fenetre);
-//                SaveAndLoad.ModelToXml(noeuds, pathname);
-
+                SaveAndLoad.ModelToXml(SaveAndLoad.ViewToModel(fenetre), pathname);
 
                 break;
             case SAVEAS:
@@ -77,7 +83,7 @@ public class Controleur implements Observateur {
                 } else {
                     break;
                 }
-//                SaveAndLoad.ModelToXml(noeuds, pathname);
+                SaveAndLoad.ModelToXml(SaveAndLoad.ViewToModel(fenetre), pathname);
 
                 break;
             case CREERNOEUD:
@@ -110,10 +116,13 @@ public class Controleur implements Observateur {
                 if (!oldWord.equals("") && !newWord.equals("")){
                     Recherche.rempalcerParMot(oldWord, newWord, fenetre);
                     Recherche.removeHighLights(fenetre);
+                    fenetre.getToolBar().getSearchField().setText("");
+                    fenetre.getToolBar().getReplaceField().setText("");
                     fenetre.getToolBar().setReplaceVisible(false);
 
                 }else if (oldWord.equals("")){
                     Recherche.removeHighLights(fenetre);
+                    fenetre.getToolBar().getReplaceField().setText("");
                     fenetre.getToolBar().setReplaceVisible(false);
                 }
                 break;

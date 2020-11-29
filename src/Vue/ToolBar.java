@@ -55,6 +55,8 @@ public class ToolBar extends Observe implements ActionListener {
         btnSaveAs.setActionCommand("SaveAs");
         toolBar.add( btnSaveAs, BorderLayout.WEST );
 
+        toolBar.addSeparator(new Dimension(30,0));
+
         btnAjouterNoeud = new JButton(new ImageIcon( "icons/Plus.png" ));
         btnAjouterNoeud.setToolTipText( "Ajouter un Noeud" );
         btnAjouterNoeud.addActionListener(this);
@@ -73,6 +75,8 @@ public class ToolBar extends Observe implements ActionListener {
         btnSupprimerNoeud.setActionCommand("Supprimer");
         toolBar.add( btnSupprimerNoeud );
 
+        toolBar.addSeparator(new Dimension(30,0));
+
 
         btnLoop = new JButton(new ImageIcon( "icons/Loop.png" ));
         btnLoop.setToolTipText( "Rechercher un mot" );
@@ -84,7 +88,7 @@ public class ToolBar extends Observe implements ActionListener {
         searchField.setMaximumSize(new Dimension(100,40));
         toolBar.add(searchField, BorderLayout.EAST);
 
-        replaceLabel = new JLabel("Remplacer par");
+        replaceLabel = new JLabel("Remplacer :");
         replaceLabel.setVisible(false);
         toolBar.add(replaceLabel, BorderLayout.EAST);
 

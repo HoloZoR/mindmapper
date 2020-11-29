@@ -15,7 +15,6 @@ public class Recherche {
     public static Boolean rechercherMot(String mot, FenetrePrincipal fenetre){
         Boolean founded = false;
         for (Map.Entry m : fenetre.getNoeuds().entrySet()) {
-            //JPanel panel = (JPanel) m.getValue();
             JTextField textField = (JTextField) m.getKey();
             String text = textField.getText().toLowerCase();
             StringBuilder builder = new StringBuilder(text);
