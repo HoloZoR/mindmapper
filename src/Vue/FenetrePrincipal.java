@@ -17,8 +17,8 @@ import java.util.Map;
 public class FenetrePrincipal extends Observe implements ActionListener {
     public final int WINDOWWIDTH = 640;
     public final int WINDOWHEIGHT = 480;
-    public final int NOEUDWIDTH = 100;
-    public final int NOEUDHEIGHT = 100;
+    public final int NOEUDWIDTH = 120;
+    public final int NOEUDHEIGHT = 120;
 
     public int nodeIds = 0;
     private ToolBar toolBar;
@@ -101,7 +101,7 @@ public class FenetrePrincipal extends Observe implements ActionListener {
         JPanel pan = new JPanel();
         pan.setBorder(new BevelBorder(BevelBorder.RAISED));
         pan.setBackground(Color.decode("#FFE4C4"));
-        pan.setLayout(new GridLayout(3, 1));
+        pan.setLayout(new GridLayout(4, 1));
         pan.setSize(NOEUDWIDTH, NOEUDHEIGHT);
         pan.add(textLabel);
         pan.add(textArea);
@@ -117,10 +117,15 @@ public class FenetrePrincipal extends Observe implements ActionListener {
         btnDownSize.setName(""+nodeIds);
 
         JPanel pan1 = new JPanel();
-        pan1.setLayout(new GridLayout(2, 2));
+        pan1.setBackground(Color.decode("#FFE4C4"));
+        pan1.setLayout(new GridLayout(1, 5));
+        pan1.add(new JLabel(""));
+        pan1.add(new JLabel(""));
+        pan1.add(new JLabel(""));
         pan1.add(btnUpSize);
         pan1.add(btnDownSize);
 
+        pan.add(new JLabel(""));
         pan.add(pan1);
 
         pan.setName(""+nodeIds); // pour identifier les noeuds
@@ -195,7 +200,6 @@ public class FenetrePrincipal extends Observe implements ActionListener {
                     return i;
             }
         }
-
         return -1;
     }
     @Override
@@ -219,7 +223,6 @@ public class FenetrePrincipal extends Observe implements ActionListener {
                 int indice = getComponentIndex(text);
                 pan.remove(text);
                 pan.add(txt, indice);
-
                 revalidate();
                 repaint();
                 break;
