@@ -20,7 +20,7 @@ public class FenetrePrincipal extends Observe implements ActionListener {
     public final int NOEUDWIDTH = 100;
     public final int NOEUDHEIGHT = 100;
 
-    public int nodeIds =0;
+    public int nodeIds = 0;
     private ToolBar toolBar;
     private Surface surface;
     private HashMap<Component, JPanel> noeuds;
@@ -95,13 +95,15 @@ public class FenetrePrincipal extends Observe implements ActionListener {
             }
         });
 
+        JTextArea textArea = new JTextArea("ecrit une descri\nption ici");
+
         JPanel pan = new JPanel();
         pan.setBorder(new BevelBorder(BevelBorder.RAISED));
         pan.setBackground(Color.decode("#FFE4C4"));
         pan.setLayout(new GridLayout(3, 1));
         pan.setSize(NOEUDWIDTH, NOEUDHEIGHT);
         pan.add(textLabel);
-        pan.add(new JLabel(""));
+        pan.add(textArea);
         pan.add(new JLabel(""));
 
         nodeIds++;
