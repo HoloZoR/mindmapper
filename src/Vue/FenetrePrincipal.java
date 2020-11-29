@@ -5,6 +5,7 @@ import Utils.Mouvement;
 import Utils.Observe;
 
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
@@ -91,12 +92,14 @@ public class FenetrePrincipal extends Observe implements ActionListener {
         textField.setActionCommand("TextNoeud");
 
         JPanel pan = new JPanel();
-        pan.setBackground(Color.lightGray);
+        pan.setBorder(new BevelBorder(BevelBorder.RAISED));
+        pan.setBackground(Color.decode("#FFE4C4"));
         pan.setLayout(new GridLayout(3, 1));
         pan.setSize(NOEUDWIDTH, NOEUDHEIGHT);
         pan.add(textField);
         pan.add(new JLabel(""));
         pan.add(new JLabel(""));
+
 
 
         nodeIds++;

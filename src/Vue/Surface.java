@@ -28,7 +28,8 @@ public class Surface extends JPanel {
 
     public void paintComponent(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
-        g2d.setColor(Color.blue);
+        g2d.setColor(Color.darkGray);
+        g2d.setStroke(new BasicStroke(4));
         if(liaisons.size() >= 2) {
             for (int i = 0; i < liaisons.size()-1; i+=2) {
                 Component noeud1 = liaisons.get(i);

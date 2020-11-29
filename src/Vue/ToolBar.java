@@ -81,7 +81,7 @@ public class ToolBar extends Observe implements ActionListener {
         toolBar.add(btnLoop, BorderLayout.EAST);
 
         searchField = new JTextField( "" );
-        searchField.setMaximumSize(new Dimension(150,40));
+        searchField.setMaximumSize(new Dimension(100,40));
         toolBar.add(searchField, BorderLayout.EAST);
 
         replaceLabel = new JLabel("Remplacer par");
@@ -89,7 +89,7 @@ public class ToolBar extends Observe implements ActionListener {
         toolBar.add(replaceLabel, BorderLayout.EAST);
 
         replaceField= new JTextField( "" );
-        replaceField.setMaximumSize(new Dimension(150,40));
+        replaceField.setMaximumSize(new Dimension(100,40));
         replaceField.setVisible(false);
         toolBar.add(replaceField, BorderLayout.EAST);
 
