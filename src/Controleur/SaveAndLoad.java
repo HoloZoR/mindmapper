@@ -2,9 +2,7 @@ package Controleur;
 
 import java.awt.*;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -178,7 +176,9 @@ public class SaveAndLoad {
     }
 
     public static void  ModelToView(ArrayList<Noeud> noeuds, FenetrePrincipal fenetre){
-        HashMap<JTextField, JPanel> noeudsView = new HashMap<>();
+        HashMap<Integer, JPanel> noeudsView = new HashMap<>();
+        ArrayList<Liaison> liaisons = new ArrayList<>();
+
         for (Noeud noeud: noeuds) {
 
             JTextField textField = new JTextField(noeud.getTitre());
@@ -205,21 +205,16 @@ public class SaveAndLoad {
             fenetre.getSurface().add(pan);
             fenetre.getMv().addListener(pan);
 
+            noeudsView.put(noeud.getId(), pan);
+            liaisons.addAll(noeud.getLiaisonFils());
         }
 
-        //TODO : AJOUTER LES LIAISONS
-        //ArrayList<Component> liaisons = new ArrayList<>();
-//        for (int i = 0; i < listLiaisons.getLength(); i++) {
-//
-//            JPanel panelPere = listLiaisons[0];
-//            JPanel panelFils = listLiaisons[1];
-//
-//            Liaison liaison = new Liaison(
-//                    noeudsMap.get(Integer.parseInt(panelPere.getName())),
-//                    noeudsMap.get(Integer.parseInt(panelFils.getName()))
-//            );
-//            noeudsMap.get(Integer.parseInt(panelPere.getName())).addLiaisonFils(liaison);
-//        }
+        for (Liaison l: liaisons) {
+            JPanel pere = noeudsView.get(l.getNoeudPere().getId());
+            JPanel fils = noeudsView.get(l.getNoeudFils().getId());
+            fenetre.getSurface().getLiaisons().add(pere);
+            fenetre.getSurface().getLiaisons().add(fils);
+        }
 
     }
 
@@ -234,24 +229,34 @@ public class SaveAndLoad {
             String titre = textField.getText();
             //TODO : AJOUTER DESCRIPTION
             String description = "";
+
             double x = panel.getX();
             double y = panel.getY();
 
             Noeud noeud = new Noeud(id,titre,description,x,y);
             noeudsMap.put(noeud.getId(), noeud);
         }
-        //TODO : AJOUTER LES LIAISONS
-//        for (int i = 0; i < listLiaisons.getLength(); i++) {
-//
-//            JPanel panelPere = listLiaisons[0];
-//            JPanel panelFils = listLiaisons[1];
-//
-//            Liaison liaison = new Liaison(
-//                    noeudsMap.get(Integer.parseInt(panelPere.getName())),
-//                    noeudsMap.get(Integer.parseInt(panelFils.getName()))
-//            );
-//            noeudsMap.get(Integer.parseInt(panelPere.getName())).addLiaisonFils(liaison);
-//        }
+        ArrayList<Component> listLiaisons = fenetre.getSurface().getLiaisons();
+        HashMap<String,Liaison> listLiaisonsSansDoublons = new HashMap<>();
+
+        for (int i = 0; i < listLiaisons.size()-1; i+=2) {
+
+            JPanel panelPere = (JPanel) listLiaisons.get(i);
+            JPanel panelFils = (JPanel) listLiaisons.get(i+1);
+
+            Liaison liaison = new Liaison(
+                    noeudsMap.get(Integer.parseInt(panelPere.getName())),
+                    noeudsMap.get(Integer.parseInt(panelFils.getName()))
+            );
+            listLiaisonsSansDoublons.put(panelPere.getName()+"-"+panelFils.getName(),liaison);
+        }
+
+        System.out.println(listLiaisonsSansDoublons.toString());
+        for (Map.Entry l : listLiaisonsSansDoublons.entrySet()) {
+            Liaison liaison = (Liaison) l.getValue();
+            noeudsMap.get(liaison.getNoeudPere().getId()).addLiaisonFils(liaison);
+        }
+
 
         return new ArrayList<>(noeudsMap.values());
     }
