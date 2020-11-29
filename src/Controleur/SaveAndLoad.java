@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.*;
-import javax.swing.border.BevelBorder;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -168,33 +167,22 @@ public class SaveAndLoad {
 
         for (Noeud noeud: noeuds) {
 
-            JTextField textField = new JTextField(noeud.getTitre());
-            textField.addActionListener(fenetre);
-            textField.setActionCommand("TextNoeud");
+            fenetre.ajouterNoeudWithModel(
+                    noeud.getId(),
+                    noeud.getTitre(),
+                    noeud.getDescription(),
+                    noeud.getX(),
+                    noeud.getY()
+            );
 
-            JPanel pan = new JPanel();
-            pan.setBorder(new BevelBorder(BevelBorder.RAISED));
-            pan.setBackground(Color.decode("#FFE4C4"));
-            pan.setLayout(new GridLayout(3, 1));
-            pan.setSize(fenetre.NOEUDWIDTH, fenetre.NOEUDHEIGHT);
-            pan.setLocation((int) noeud.getX(),(int)noeud.getY());
-            pan.add(textField);
 
-            //TODO : AJOUTER DESCRIPTION
-
-            pan.add(new JLabel(""));
-            pan.add(new JLabel(""));
-
-            fenetre.nodeIds++;
-            pan.setName(""+noeud.getId());
-
-            fenetre.getNoeuds().put(textField, pan);
-            fenetre.getSurface().add(pan);
-            fenetre.getMv().addListener(pan);
-
-            noeudsView.put(noeud.getId(), pan);
             liaisons.addAll(noeud.getLiaisonFils());
         }
+        for (Map.Entry m : fenetre.getNoeuds().entrySet()) {
+            JPanel panel = (JPanel) m.getValue();
+            noeudsView.put(Integer.parseInt(panel.getName()), panel);
+        }
+
 
         for (Liaison l: liaisons) {
             JPanel pere = noeudsView.get(l.getNoeudPere().getId());
@@ -210,12 +198,12 @@ public class SaveAndLoad {
 
         for (Map.Entry m : fenetre.getNoeuds().entrySet()) {
             JPanel panel = (JPanel) m.getValue();
-            JTextField textField = (JTextField) m.getKey();
+            JTextField titreField = (JTextField) panel.getComponent(0);
+            JTextArea descriptionField = (JTextArea) panel.getComponent(1);
 
             int id = Integer.parseInt(panel.getName());
-            String titre = textField.getText();
-            //TODO : AJOUTER DESCRIPTION
-            String description = "";
+            String titre = titreField.getText();
+            String description = descriptionField.getText();
 
             double x = panel.getX();
             double y = panel.getY();

@@ -10,7 +10,7 @@ import java.io.File;
 public class Controleur implements Observateur {
     private FenetrePrincipal fenetre;
     private String pathname = "";
-/**/
+
     public Controleur() {
         this.fenetre = new FenetrePrincipal();
         fenetre.setVisible(true);
@@ -50,6 +50,7 @@ public class Controleur implements Observateur {
                 fenetre.revalidate();
                 break;
             case SAVE:
+                fenetre.allLabelToTextfield();
                 if (pathname.isEmpty()) {
                     int save = fc.showSaveDialog(fenetre);
 
@@ -57,23 +58,26 @@ public class Controleur implements Observateur {
                         File file = fc.getSelectedFile();
                         pathname = file.getAbsolutePath();
                     } else {
+                        fenetre.allTextFieldToLabel();
                         break;
                     }
                 }
                 SaveAndLoad.ModelToXml(SaveAndLoad.ViewToModel(fenetre), pathname);
-
+                fenetre.allTextFieldToLabel();
                 break;
             case SAVEAS:
+                fenetre.allLabelToTextfield();
                 int saveAs = fc.showSaveDialog(fenetre);
 
                 if (saveAs == JFileChooser.APPROVE_OPTION) {
                     File file = fc.getSelectedFile();
                     pathname = file.getAbsolutePath();
                 } else {
+                    fenetre.allTextFieldToLabel();
                     break;
                 }
                 SaveAndLoad.ModelToXml(SaveAndLoad.ViewToModel(fenetre), pathname);
-
+                fenetre.allTextFieldToLabel();
                 break;
             case CREERNOEUD:
                 fenetre.ajouterNoeud();
@@ -92,6 +96,8 @@ public class Controleur implements Observateur {
                     boolean founded = Recherche.rechercherMot(mot, fenetre);
                     if (founded){
                         fenetre.getToolBar().setReplaceVisible(true);
+                    }else{
+                        fenetre.allTextFieldToLabel();
                     }
 
                 }else{

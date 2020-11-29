@@ -8,7 +8,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 
 public class ToolBar extends Observe implements ActionListener {
@@ -163,9 +162,6 @@ public class ToolBar extends Observe implements ActionListener {
         return searchField;
     }
 
-    public void setSearchField(JTextField searchField) {
-        this.searchField = searchField;
-    }
     public void setReplaceVisible(boolean rep){
         replaceField.setVisible(rep);
         replaceLabel.setVisible(rep);

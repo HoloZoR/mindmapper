@@ -1,7 +1,5 @@
 package Utils;
 
-import Utils.Observateur;
-
 import javax.swing.*;
 
 public class Observe extends JFrame {

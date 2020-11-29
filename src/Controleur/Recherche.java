@@ -1,6 +1,5 @@
 package Controleur;
 
-import Model.Noeud;
 import Vue.FenetrePrincipal;
 
 import javax.swing.*;

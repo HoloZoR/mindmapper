@@ -2,10 +2,7 @@ package Vue;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Surface extends JPanel {
     private ArrayList<Component> liaisons;
@@ -20,10 +17,6 @@ public class Surface extends JPanel {
 
     public ArrayList<Component> getLiaisons() {
         return liaisons;
-    }
-
-    public void setLiaisons(ArrayList<Component> liaisons) {
-        this.liaisons = liaisons;
     }
 
     public void paintComponent(Graphics g) {
